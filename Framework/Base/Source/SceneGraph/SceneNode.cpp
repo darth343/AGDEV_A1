@@ -137,6 +137,7 @@ bool CSceneNode::DeleteChild(EntityBase* theEntity)
 				}
 			}
 		}
+		return true;
 	}
 
 	return false;
