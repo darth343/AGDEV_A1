@@ -1,7 +1,4 @@
 Debug/
-Common/
-glfw/
-glew/
 Test/
 Base/Debug
 *.opensdf
