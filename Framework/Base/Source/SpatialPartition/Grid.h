@@ -67,6 +67,9 @@ public:
 	// Get list of objects in this grid
 	vector<EntityBase*> GetListOfObject(void);
 
+	// Check if object still in grid
+	bool CheckIfStillInGrid();
+
 	// PrintSelf
 	void PrintSelf();
 

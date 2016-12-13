@@ -14,6 +14,7 @@ GroundEntity::GroundEntity(Mesh* _modelMesh1, Mesh* _modelMesh2)
 	, m_bMaxBoundaryDefined(false)
 	, m_bMinBoundaryDefined(false)
 {
+	SetType(T_GROUND);
 	modelMesh[0] = _modelMesh1;
 	modelMesh[1] = _modelMesh2;
 }

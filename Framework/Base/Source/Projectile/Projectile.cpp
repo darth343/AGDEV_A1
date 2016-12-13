@@ -13,6 +13,7 @@ CProjectile::CProjectile(void)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
 {
+	SetType(T_BULLET);
 }
 
 CProjectile::CProjectile(Mesh* _modelMesh)
@@ -23,6 +24,7 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
 {
+	SetType(T_BULLET);
 }
 
 CProjectile::~CProjectile(void)

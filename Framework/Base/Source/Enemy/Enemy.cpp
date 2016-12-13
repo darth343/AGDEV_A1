@@ -49,6 +49,7 @@ void CEnemy::Init()
 
 	// Add the EntityManager
 	EntityManager::GetInstance()->AddEntity(this, true);
+	SetType(T_ENEMY);
 }
 
 // Reset this player instance to default

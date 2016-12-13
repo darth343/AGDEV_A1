@@ -8,6 +8,7 @@ SkyBoxEntity::SkyBoxEntity(void)
 	: size(1000.0f, 1000.0f, 1000.0f)
 	, m_bBoundaryDefined(false)
 {
+	SetType(T_SKYBOX);
 }
 
 SkyBoxEntity::~SkyBoxEntity()

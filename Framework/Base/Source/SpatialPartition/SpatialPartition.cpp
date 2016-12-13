@@ -175,7 +175,7 @@ void CSpatialPartition::Render(Vector3* theCameraPosition)
 		for (int j = 0; j<zNumOfGrid; j++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(xGridSize*i - (xSize >> 1), 0.0f, zGridSize*j - (zSize >> 1));
+			modelStack.Translate(xGridSize*i - (xSize >> 1) + (xGridSize >> 1), 0.0f, zGridSize*j - (zSize >> 1) + (zGridSize >> 1));
 			modelStack.PushMatrix();
 			modelStack.Scale(xGridSize, 1.0f, zGridSize);
 			modelStack.Rotate(-90, 1, 0, 0);

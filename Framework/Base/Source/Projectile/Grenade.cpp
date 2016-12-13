@@ -19,6 +19,7 @@ CGrenade::CGrenade(void)
 	, m_fElapsedTime(0.0f)
 	, m_pTerrain(NULL)
 {
+	SetType(T_GRENADE);
 }
 
 CGrenade::CGrenade(Mesh* _modelMesh)
@@ -27,6 +28,7 @@ CGrenade::CGrenade(Mesh* _modelMesh)
 	, m_fElapsedTime(0.0f)
 	, m_pTerrain(NULL)
 {
+	SetType(T_GRENADE);
 }
 
 CGrenade::~CGrenade(void)

@@ -16,6 +16,7 @@ CLaser::CLaser(void)
 	, angle_y(0.0)
 	, angle_z(0.0)
 {
+	SetType(T_LASER);
 }
 
 CLaser::CLaser(Mesh* _modelMesh)
@@ -25,6 +26,7 @@ CLaser::CLaser(Mesh* _modelMesh)
 	, angle_y(0.0)
 	, angle_z(0.0)
 {
+	SetType(T_LASER);
 }
 
 CLaser::~CLaser(void)
