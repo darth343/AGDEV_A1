@@ -88,6 +88,8 @@ public:
 	void UpdateFreeFall(double dt = 0.0333f);
 	// Update
 	void Update(double dt = 0.0333f);
+	// Check collision with walls
+	void CheckWallCollision(Vector3 &nextPos);
 
 	// Constrain the position within the borders
 	void Constrain(void);

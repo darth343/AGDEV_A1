@@ -37,6 +37,9 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{033100b9-3c71-4520-994a-593cf70f7760}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Wall">
+      <UniqueIdentifier>{bad9ac1d-08cb-4abc-a249-492140cd955e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -123,6 +126,9 @@
     <ClCompile Include="Source\Enemy\Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Wall\WallEntity.cpp">
+      <Filter>Wall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -205,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy\Enemy.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Wall\WallEntity.h">
+      <Filter>Wall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

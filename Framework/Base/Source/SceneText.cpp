@@ -19,7 +19,7 @@
 #include "TextEntity.h"
 #include "SpriteEntity.h"
 #include "Light.h"
-#include "SkyBox/SkyBoxEntity.h"
+#include "SkyBox\SkyBoxEntity.h"
 #include "SceneGraph\SceneGraph.h"
 #include "SpatialPartition\SpatialPartition.h"
 
@@ -243,6 +243,11 @@ void SceneText::Init()
 	CEnemy* theEnemy = new CEnemy();
 	theEnemy->Init();
 	theEnemy->SetTerrain(groundEntity);
+
+	CWall* theWall = new CWall();
+	theWall->SetRotation(90.f);
+	theWall->SetScale(Vector3(10, 10, 10));
+	theWall->SetPosition(Vector3(0, 0, 0));
 }
 
 void SceneText::Update(double dt)

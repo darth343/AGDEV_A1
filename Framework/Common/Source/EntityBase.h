@@ -13,6 +13,7 @@ public:
 		T_LASER,
 		T_BULLET,
 		T_GRENADE,
+		T_WALL,
 		T_SKYBOX,
 		T_GROUND, 
 	};

@@ -52,7 +52,7 @@ void CGrenade::Update(double dt)
 		SetIsDone(true);	// This method informs EntityManager to remove this instance
 
 		// Check the SpatialPartition to destroy nearby objects
-		vector<EntityBase*> ExportList = CSpatialPartition::GetInstance()->GetObjects(position, 1.0f);
+		vector<EntityBase*> ExportList = CSpatialPartition::GetInstance()->GetObjects(position);
 		for (int i = 0; i < ExportList.size(); ++i)
 		{
 			// Remove from Scene Graph

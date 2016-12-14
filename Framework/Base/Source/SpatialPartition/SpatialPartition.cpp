@@ -4,6 +4,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "../LevelOfDetails/LevelOfDetails.h"
+#include "../Wall/WallEntity.h"
 
 template <typename T> vector<T> concat(vector<T> &a, vector<T> &b) {
 	vector<T> ret = vector<T>();
@@ -242,7 +243,7 @@ CGrid CSpatialPartition::GetGrid(const int xIndex, const int yIndex) const
 /********************************************************************************
  Get vector of objects from this Spatial Partition
  ********************************************************************************/
-vector<EntityBase*> CSpatialPartition::GetObjects(Vector3 position, const float radius)
+vector<EntityBase*> CSpatialPartition::GetObjects(Vector3 position)
 {
 	// Get the indices of the object's position
 	int xIndex = (((int)position.x - (-xSize >> 1)) / (xSize / xNumOfGrid));
@@ -256,14 +257,33 @@ vector<EntityBase*> CSpatialPartition::GetObjects(Vector3 position, const float 
  ********************************************************************************/
 void CSpatialPartition::Add(EntityBase* theObject)
 {
-	// Get the indices of the object's position
-	int xIndex = (((int)theObject->GetPosition().x - (-xSize >> 1)) / (xSize / xNumOfGrid));
-	int zIndex = (((int)theObject->GetPosition().z - (-zSize >> 1)) / (zSize / zNumOfGrid));
-
-	// Add them to each grid
-	if (((xIndex >= 0) && (xIndex<xNumOfGrid)) && ((zIndex >= 0) && (zIndex<zNumOfGrid)))
+	if (theObject->GetType() == EntityBase::EntityType::T_WALL)
 	{
-		theGrid[xIndex*zNumOfGrid + zIndex].Add(theObject);
+		CWall* temp = dynamic_cast<CWall*>(theObject);
+		int minIndexX = (((int)temp->GetMin().x - (-xSize >> 1)) / (xSize / xNumOfGrid));
+		int maxIndexX = (((int)temp->GetMax().x - (-xSize >> 1)) / (xSize / xNumOfGrid));
+		int minIndexZ = (((int)temp->GetMin().z - (-zSize >> 1)) / (zSize / zNumOfGrid));
+		int maxIndexZ = (((int)temp->GetMax().z - (-zSize >> 1)) / (zSize / zNumOfGrid));
+
+		for (int i = minIndexX; i <= maxIndexX; i++)
+		{
+			for (int j = minIndexZ; j <= maxIndexZ; j++)
+			{
+				theGrid[i*zNumOfGrid + j].Add(theObject);
+			}
+		}
+	}
+	else
+	{
+		// Get the indices of the object's position
+		int xIndex = (((int)theObject->GetPosition().x - (-xSize >> 1)) / (xSize / xNumOfGrid));
+		int zIndex = (((int)theObject->GetPosition().z - (-zSize >> 1)) / (zSize / zNumOfGrid));
+
+		// Add them to each grid
+		if (((xIndex >= 0) && (xIndex<xNumOfGrid)) && ((zIndex >= 0) && (zIndex<zNumOfGrid)))
+		{
+			theGrid[xIndex*zNumOfGrid + zIndex].Add(theObject);
+		}
 	}
 }
 

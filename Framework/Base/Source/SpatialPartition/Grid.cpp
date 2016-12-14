@@ -4,6 +4,7 @@
 #include "RenderHelper.h"
 #include "../GenericEntity.h"
 #include "../PlayerInfo/PlayerInfo.h"
+#include "../Wall/WallEntity.h"
 
 /********************************************************************************
 Constructor
@@ -71,20 +72,56 @@ void CGrid::Update(vector<EntityBase*>* migrationList)
 	it = ListOfObjects.begin();
 	while (it != ListOfObjects.end())
 	{
-		Vector3 position = (*it)->GetPosition();
-
-		if (((min.x <= position.x) && (position.x <= max.x)) &&
-			((min.z <= position.z) && (position.z <= max.z)))
+		EntityBase* temp = (*it);
+		if (temp->GetType() == EntityBase::EntityType::T_WALL)
 		{
-			// Move on otherwise
-			++it;
+			CWall* temp = dynamic_cast<CWall*>(*it);
+			Vector3 w_min = temp->GetMin();
+			Vector3 w_max = temp->GetMax();
+			if (
+				
+				(w_min.x < max.x && w_min.x > min.x &&
+				w_min.z < max.z && w_min.z > min.z) ||
+
+				(w_max.x < max.x && w_max.x > min.x &&
+				w_max.z < max.z && w_max.z > min.z) ||
+				
+				(w_min.x < min.x && w_max.x > max.x &&
+				w_min.z < min.z && w_max.z > max.z)
+				
+				)
+
+			//if (((min.x <= position.x) && (position.x <= max.x)) &&
+			//	((min.z <= position.z) && (position.z <= max.z)))
+			{
+				// Move on otherwise
+				++it;
+			}
+			else
+			{
+				migrationList->push_back(*it);
+
+				// Remove from this Grid
+				it = ListOfObjects.erase(it);
+			}
 		}
 		else
 		{
-			migrationList->push_back(*it);
+			Vector3 position = (*it)->GetPosition();
 
-			// Remove from this Grid
-			it = ListOfObjects.erase(it);
+			if (((min.x <= position.x) && (position.x <= max.x)) &&
+				((min.z <= position.z) && (position.z <= max.z)))
+			{
+				// Move on otherwise
+				++it;
+			}
+			else
+			{
+				migrationList->push_back(*it);
+
+				// Remove from this Grid
+				it = ListOfObjects.erase(it);
+			}
 		}
 	}
 }
@@ -101,11 +138,28 @@ void CGrid::Render(void)
 		if (min.x < pos.x && max.x > pos.x &&
 			min.z < pos.z && max.z > pos.z)
 		{
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+			glPointSize(10.f);
 			RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("GRIDMESH_RED"));
 		}
 		else
 		{
-			//RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("GRIDMESH_GREEN"));
+			bool wallhere = false;
+			for (int i = 0; i < ListOfObjects.size(); ++i)
+			{
+				if (ListOfObjects[i]->GetType() == EntityBase::EntityType::T_WALL)
+				{
+					wallhere = true;
+				}
+			}
+			if (wallhere)
+			{
+				RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("GRIDMESH_WHITE"));
+			}
+			else
+			{
+				RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("GRIDMESH_GREEN"));
+			}
 		}
 		//RenderHelper::RenderMesh(theMesh);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

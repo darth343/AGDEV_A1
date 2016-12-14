@@ -8,6 +8,8 @@
 #include "../WeaponInfo/Pistol.h"
 #include "../WeaponInfo/LaserBlaster.h"
 #include "../WeaponInfo/GrenadeThrow.h"
+#include "../SpatialPartition/SpatialPartition.h"
+#include "../Wall/WallEntity.h"
 
 // Allocating and initializing CPlayerInfo's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -268,6 +270,48 @@ void CPlayerInfo::UpdateFreeFall(double dt)
 	}
 }
 
+void CPlayerInfo::CheckWallCollision(Vector3& nextPos)
+{
+	vector<EntityBase*> ObjectList = CSpatialPartition::GetInstance()->GetObjects(nextPos);
+	bool moveX = true;
+	bool moveZ = true;
+	for (int i = 0; i < ObjectList.size(); i++)
+	{
+		if (ObjectList[i]->GetType() == EntityBase::EntityType::T_WALL)
+		{
+			CWall* Wall = dynamic_cast<CWall*>(ObjectList[i]);
+			if (moveX)
+			{
+				if (nextPos.x > Wall->GetMin().x && nextPos.x < Wall->GetMax().x)
+				{
+					if ((position.z > Wall->GetMin().z && position.z < Wall->GetMax().z))
+					{
+						moveX = false;
+					}
+				}
+			}
+			if (moveZ)
+			{
+				if (nextPos.z > Wall->GetMin().z && nextPos.z < Wall->GetMax().z)
+				{
+					if ((position.x > Wall->GetMin().x && position.x < Wall->GetMax().x))
+					{
+						moveZ = false;
+					}
+				}
+			}
+		}
+	}
+	if (!moveX)
+	{
+		nextPos.x = position.x;
+	}
+	if (!moveZ)
+	{
+		nextPos.z = position.z;
+	}
+}
+
 void CPlayerInfo::UpdateCamera(double dt)
 {
 	double mouse_diff_x, mouse_diff_y;
@@ -284,30 +328,33 @@ void CPlayerInfo::UpdateCamera(double dt)
 	{
 		Vector3 viewVector = target - position;
 		Vector3 rightUV;
+		Vector3 nextPosition;
 		if (KeyboardController::GetInstance()->IsKeyDown('W'))
 		{
-			position += viewVector.Normalized() * (float)m_dSpeed * (float)dt;
+			nextPosition = position + viewVector.Normalized() * (float)m_dSpeed * (float)dt;
 		}
 		else if (KeyboardController::GetInstance()->IsKeyDown('S'))
 		{
-			position -= viewVector.Normalized() * (float)m_dSpeed * (float)dt;
+			nextPosition = position - viewVector.Normalized() * (float)m_dSpeed * (float)dt;
 		}
 		if (KeyboardController::GetInstance()->IsKeyDown('A'))
 		{
 			rightUV = (viewVector.Normalized()).Cross(up);
 			rightUV.y = 0;
 			rightUV.Normalize();
-			position -= rightUV * (float)m_dSpeed * (float)dt;
+			nextPosition = position - rightUV * (float)m_dSpeed * (float)dt;
 		}
 		else if (KeyboardController::GetInstance()->IsKeyDown('D'))
 		{
 			rightUV = (viewVector.Normalized()).Cross(up);
 			rightUV.y = 0;
 			rightUV.Normalize();
-			position += rightUV * (float)m_dSpeed * (float)dt;
+			nextPosition = position + rightUV * (float)m_dSpeed * (float)dt;
 		}
+		CheckWallCollision(nextPosition);
+		position = nextPosition;
 		// Constrain the position
-		//Constrain();
+		Constrain();
 		// Update the target
 		target = position + viewVector;
 	}
