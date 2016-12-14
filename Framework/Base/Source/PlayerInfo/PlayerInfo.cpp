@@ -511,6 +511,23 @@ void CPlayerInfo::Update(double dt)
 	}
 }
 
+void CPlayerInfo::Render(const std::string& _meshName)
+{
+	Vector3 view = (target - position).Normalized();
+
+	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+
+	modelStack.Translate(position.x + view.x, position.y + view.y, position.z + view.z);
+	modelStack.Rotate(- 85 + Math::RadianToDegree(atan2(view.x, view.z)), 0, 1, 0);
+	modelStack.Rotate(90.f - Math::RadianToDegree(acos(view.Dot(Vector3(0, 1, 0)))), 0, 0, 1);
+	modelStack.Translate(1.6f, -0.6f, 0.6f);
+
+	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh(_meshName));
+	modelStack.PopMatrix();
+}
+
 // Constrain the position within the borders
 void CPlayerInfo::Constrain(void)
 {
