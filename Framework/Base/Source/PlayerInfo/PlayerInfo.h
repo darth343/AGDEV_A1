@@ -3,6 +3,9 @@
 #include "../FPSCamera.h"
 #include "../GroundEntity.h"
 #include "../WeaponInfo/WeaponInfo.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
+#include "MeshBuilder.h"
 
 class CPlayerInfo
 {
@@ -96,6 +99,9 @@ public:
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera(void);
 	void UpdateCamera(double dt);
+
+	// Render
+	void Render(const std::string& _meshName);
 
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
