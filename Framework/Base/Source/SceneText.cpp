@@ -288,10 +288,10 @@ void SceneText::Init()
 	theWall->SetPos(Vector3(0, 0, 0));
 
 	CWall* enemyHouse = new CWall();
-	enemyHouse->SetScale(Vector3(5, 5, 5));
+	enemyHouse->SetScale(Vector3(1, 1, 1));
 	enemyHouse->SetPosition(Vector3(-100, -5, -100));
 	enemyHouse->InitLOD("enemyhouse", "cube", "cubeSG");
-	enemyHouse->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
+	enemyHouse->SetAABB(Vector3(8, 0.5, 14), Vector3(-20, -0.5, -11));
 
 	//CWall* fortress = new CWall();
 	//fortress->SetScale(Vector3(5, 5, 5));
