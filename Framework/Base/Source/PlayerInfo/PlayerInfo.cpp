@@ -51,12 +51,12 @@ CPlayerInfo::~CPlayerInfo(void)
 void CPlayerInfo::Init(void)
 {
 	// Set the default values
-	defaultPosition.Set(0,0,-20);
+	defaultPosition.Set(-200 ,0,-50);
 	defaultTarget.Set(0,0,0);
 	defaultUp.Set(0,1,0);
 
 	// Set the current values
-	position.Set(0, 0, -20);
+	position.Set(-200, 0, -50);
 	target.Set(0, 0, 0);
 	up.Set(0, 1, 0);
 
@@ -464,7 +464,7 @@ void CPlayerInfo::Update(double dt)
 {
 	UpdateCamera(dt);
 
-	CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
+	//CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
 	// Update the weapons
 	if (KeyboardController::GetInstance()->IsKeyReleased('R'))
 	{
@@ -489,6 +489,7 @@ void CPlayerInfo::Update(double dt)
 	{
 		if (primaryWeapon)
 			primaryWeapon->Discharge(position, target, this);
+
 	}
 	else if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{

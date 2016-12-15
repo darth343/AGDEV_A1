@@ -127,4 +127,5 @@ private:
 
 	CWeaponInfo* primaryWeapon;
 	CWeaponInfo* secondaryWeapon;
+
 };

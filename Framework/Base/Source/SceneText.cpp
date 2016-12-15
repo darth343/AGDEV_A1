@@ -130,8 +130,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
 	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
-	MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
-	MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
+	//MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
+	//MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
 
 	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead", "OBJ//robotHead.obj");
 	MeshBuilder::GetInstance()->GetMesh("RobotHead")->textureID = LoadTGA("Image//robotHead.tga");
@@ -146,7 +146,30 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateOBJ("gun", "OBJ//gun.obj");
 	MeshBuilder::GetInstance()->GetMesh("gun")->textureID = LoadTGA("Image//gun.tga");
 
+	// Bullet
+	//MeshBuilder::GetInstance()->GenerateOBJ("bullet", "OBJ//bullet.obj");
+	//MeshBuilder::GetInstance()->GetMesh("bullet")->textureID = LoadTGA("Image//bullet.tga");
+	MeshBuilder::GetInstance()->GenerateSphere("bullet", Color(0.3, 0.3, 0.3), 18, 36, 0.1f);
 
+	// Enemy house
+	MeshBuilder::GetInstance()->GenerateOBJ("enemyhouse", "OBJ//enemy_house.obj");
+	MeshBuilder::GetInstance()->GetMesh("enemyhouse")->textureID = LoadTGA("Image//chair.tga");
+
+	// Fortress
+	MeshBuilder::GetInstance()->GenerateOBJ("fortress", "OBJ//fortress.obj");
+	MeshBuilder::GetInstance()->GetMesh("fortress")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("fortress2", "OBJ//fortress2.obj");
+	MeshBuilder::GetInstance()->GetMesh("fortress2")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("fortress3", "OBJ//fortress3.obj");
+	MeshBuilder::GetInstance()->GetMesh("fortress3")->textureID = LoadTGA("Image//chair.tga");
+
+	// Ground 1
+	MeshBuilder::GetInstance()->GenerateOBJ("ground1", "OBJ//ground1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ground1")->textureID = LoadTGA("Image//chair.tga");
+
+	// Ground 2
+	MeshBuilder::GetInstance()->GenerateOBJ("ground2", "OBJ//ground2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ground2")->textureID = LoadTGA("Image//chair.tga");
 
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 	MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
@@ -271,14 +294,44 @@ void SceneText::Init()
 	theEnemy->Init();
 	theEnemy->SetTerrain(groundEntity);
 
-	//theWall = new CWall();
-	//theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
-	//theWall->SetScale(Vector3(100, 10, 10));
-	//theWall->SetPos(Vector3(0, 0, 0));
 
 	theWall = Create::Wall("cube", "cubeSG", "sphere",
 		Vector3(0, 0, 0),
 		Vector3(100, 10, 10));
+
+	CWall* enemyHouse = Create::Wall("enemyhouse", "enemyhouse", "enemyhouse",
+		Vector3(0, -11, 70),
+		Vector3(2, 1.5, 1.5)
+		);
+
+	//enemyHouse->SetScale(Vector3(2, 1.5, 1.5));
+	//enemyHouse->SetPosition(Vector3(0, -11, 70));
+	//enemyHouse->InitLOD("enemyhouse", "enemyhouse", "enemyhouse");
+	//enemyHouse->SetAABB(Vector3(14, 0.5, 9), Vector3(-23, -0.5, -14));
+
+	CWall* fortress = Create::Wall("fortress", "fortress2", "fortress3",
+		Vector3(0, -11, -80),
+		Vector3(1.5, 1.3, 1)
+		);
+	//fortress->SetScale(Vector3(1.5, 1.3, 1));
+	//fortress->SetPosition(Vector3(0, -11, -80));
+	//fortress->InitLOD("fortress", "fortress2", "fortress3");
+	//fortress->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
+
+	CWall* ground1 = Create::Wall("ground1", "ground1", "ground1",
+		Vector3(0, -11, -2.9),
+		Vector3(2.2, 1, 2.5)
+		);
+	//ground1->SetScale(Vector3(2.2, 1, 2.5));
+	//ground1->SetPosition(Vector3(0, -11, -2.9));
+	//ground1->InitLOD("ground1", "ground1", "ground1");
+	//ground1->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
+
+	//CWall* ground2 = new CWall();
+	//ground2->SetScale(Vector3(1.5, 1, 2));
+	//ground2->SetPosition(Vector3(0, -11, 0));
+	//ground2->InitLOD("ground2", "ground2", "ground2");
+	//ground1->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
 }
 
 void SceneText::Update(double dt)
@@ -339,7 +392,7 @@ void SceneText::Update(double dt)
 		z -= (float)(100.f * dt);
 	if (KeyboardController::GetInstance()->IsKeyDown('H'))
 		z += (float)(100.f * dt);
-	theWall->SetPos(Vector3(x, 0, z));
+	//theWall->SetPos(Vector3(x, 0, z));
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 
