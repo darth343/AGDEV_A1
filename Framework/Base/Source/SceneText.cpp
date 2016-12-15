@@ -305,13 +305,13 @@ void SceneText::Init()
 	enemyHouse->SetAABB(Vector3(14, 0.5, 9), Vector3(-23, -0.5, -14));
 
 	CWall* fortress = new CWall();
-	fortress->SetScale(Vector3(1.3, 1.3, 1));
+	fortress->SetScale(Vector3(1.5, 1.3, 1));
 	fortress->SetPosition(Vector3(0, -11, -80));
 	fortress->InitLOD("fortress", "fortress2", "fortress3");
 	fortress->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
 
 	CWall* ground1 = new CWall();
-	ground1->SetScale(Vector3(2.5, 1, 2.5));
+	ground1->SetScale(Vector3(2.2, 1, 2.5));
 	ground1->SetPosition(Vector3(0, -11, -2.9));
 	ground1->InitLOD("ground1", "ground1", "ground1");
 	//ground1->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
