@@ -130,8 +130,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
 	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
-	MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
-	MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
+	//MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
+	//MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
 
 	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead", "OBJ//robotHead.obj");
 	MeshBuilder::GetInstance()->GetMesh("RobotHead")->textureID = LoadTGA("Image//robotHead.tga");
@@ -162,6 +162,14 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("fortress2")->textureID = LoadTGA("Image//chair.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("fortress3", "OBJ//fortress3.obj");
 	MeshBuilder::GetInstance()->GetMesh("fortress3")->textureID = LoadTGA("Image//chair.tga");
+
+	// Ground 1
+	MeshBuilder::GetInstance()->GenerateOBJ("ground1", "OBJ//ground1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ground1")->textureID = LoadTGA("Image//chair.tga");
+
+	// Ground 2
+	MeshBuilder::GetInstance()->GenerateOBJ("ground2", "OBJ//ground2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ground2")->textureID = LoadTGA("Image//chair.tga");
 
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 	MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
@@ -292,15 +300,27 @@ void SceneText::Init()
 
 	CWall* enemyHouse = new CWall();
 	enemyHouse->SetScale(Vector3(2, 1.5, 1.5));
-	enemyHouse->SetPosition(Vector3(0, -5, 80));
+	enemyHouse->SetPosition(Vector3(0, -11, 70));
 	enemyHouse->InitLOD("enemyhouse", "enemyhouse", "enemyhouse");
 	enemyHouse->SetAABB(Vector3(14, 0.5, 9), Vector3(-23, -0.5, -14));
 
 	CWall* fortress = new CWall();
 	fortress->SetScale(Vector3(1.3, 1.3, 1));
-	fortress->SetPosition(Vector3(0, -5, -80));
+	fortress->SetPosition(Vector3(0, -11, -80));
 	fortress->InitLOD("fortress", "fortress2", "fortress3");
 	fortress->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
+
+	CWall* ground1 = new CWall();
+	ground1->SetScale(Vector3(2.5, 1, 2.5));
+	ground1->SetPosition(Vector3(0, -11, -2.9));
+	ground1->InitLOD("ground1", "ground1", "ground1");
+	//ground1->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
+
+	//CWall* ground2 = new CWall();
+	//ground2->SetScale(Vector3(1.5, 1, 2));
+	//ground2->SetPosition(Vector3(0, -11, 0));
+	//ground2->InitLOD("ground2", "ground2", "ground2");
+	//ground1->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
 
 }
 
