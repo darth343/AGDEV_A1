@@ -158,7 +158,10 @@ void SceneText::Init()
 	// Fortress
 	MeshBuilder::GetInstance()->GenerateOBJ("fortress", "OBJ//fortress.obj");
 	MeshBuilder::GetInstance()->GetMesh("fortress")->textureID = LoadTGA("Image//chair.tga");
-
+	MeshBuilder::GetInstance()->GenerateOBJ("fortress2", "OBJ//fortress2.obj");
+	MeshBuilder::GetInstance()->GetMesh("fortress2")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("fortress3", "OBJ//fortress3.obj");
+	MeshBuilder::GetInstance()->GetMesh("fortress3")->textureID = LoadTGA("Image//chair.tga");
 
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 	MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
@@ -296,7 +299,7 @@ void SceneText::Init()
 	CWall* fortress = new CWall();
 	fortress->SetScale(Vector3(1.3, 1.3, 1));
 	fortress->SetPosition(Vector3(0, -5, -80));
-	fortress->InitLOD("fortress", "fortress", "fortress");
+	fortress->InitLOD("fortress", "fortress2", "fortress3");
 	fortress->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
 
 }
