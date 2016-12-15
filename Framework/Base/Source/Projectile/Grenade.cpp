@@ -19,7 +19,6 @@ CGrenade::CGrenade(void)
 	, m_fElapsedTime(0.0f)
 	, m_pTerrain(NULL)
 {
-	SetType(T_GRENADE);
 }
 
 CGrenade::CGrenade(Mesh* _modelMesh)
@@ -28,7 +27,6 @@ CGrenade::CGrenade(Mesh* _modelMesh)
 	, m_fElapsedTime(0.0f)
 	, m_pTerrain(NULL)
 {
-	SetType(T_GRENADE);
 }
 
 CGrenade::~CGrenade(void)
@@ -50,18 +48,17 @@ void CGrenade::Update(double dt)
 	{
 		SetStatus(false);
 		SetIsDone(true);	// This method informs EntityManager to remove this instance
-
+		cout << "Deleted grnade" << endl;
 		// Check the SpatialPartition to destroy nearby objects
 		vector<EntityBase*> ExportList = CSpatialPartition::GetInstance()->GetObjects(position);
 		for (int i = 0; i < ExportList.size(); ++i)
 		{
 			// Remove from Scene Graph
-			if (CSceneGraph::GetInstance()->DeleteNode(ExportList[i]) == true)
+			ExportList[i]->SetIsDone(true);
+			//if (CSceneGraph::GetInstance()->DeleteNode(ExportList[i]) == true)
 			{
 				cout << "*** This Entity removed ***" << endl;
 			}
-
-
 		}
 		return;
 	}

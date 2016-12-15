@@ -111,7 +111,7 @@ bool CSceneNode::DeleteChild(EntityBase* theEntity)
 					cout << "CSceneNode::DeleteChild: Deleted child nodes for theEntity." << endl;
 				}
 				(*it)->GetEntity()->SetIsDone(true);
-				delete *it;
+				//delete *it;
 				it = theChildren.erase(it);
 			}
 		}
@@ -131,7 +131,7 @@ bool CSceneNode::DeleteChild(EntityBase* theEntity)
 					// If DeleteChild method call above DID remove theEntity
 					// Then we should proceed to removed this child from our vector of children
 					(*it)->GetEntity()->SetIsDone(true);
-					delete *it;
+					//delete *it;
 					theChildren.erase(it);
 					break;	// Stop deleting since we have already found and deleted theEntity
 				}

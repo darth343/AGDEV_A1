@@ -67,30 +67,43 @@ Update the grid
 ********************************************************************************/
 void CGrid::Update(vector<EntityBase*>* migrationList)
 {
+	std::vector<int> ToBeRemovedIndex;
 	// Check each object to see if they are no longer in this grid
 	std::vector<EntityBase*>::iterator it;
 	it = ListOfObjects.begin();
-	while (it != ListOfObjects.end())
+	for (int index = 0; it != ListOfObjects.end(); index++)
 	{
-		EntityBase* temp = (*it);
-		if (temp->GetType() == EntityBase::EntityType::T_WALL)
+		EntityBase* object = (*it);
+		//if (object->GetType() == EntityBase::EntityType::T_WALL)
+		if (object->IsDone())
 		{
-			CWall* temp = dynamic_cast<CWall*>(*it);
+			++it;
+			ToBeRemovedIndex.push_back(index);
+			continue;
+		}
+		if (object->HasCollider())
+		{
+			GenericEntity* temp = dynamic_cast<GenericEntity*>(*it);
 			Vector3 w_min = temp->GetMin();
 			Vector3 w_max = temp->GetMax();
-			if (
-				
-				(w_min.x < max.x && w_min.x > min.x &&
-				w_min.z < max.z && w_min.z > min.z) ||
+			Vector3 position = temp->GetPosition();
+			//if (
+			//	
+			//	(w_min.x < max.x && w_min.x > min.x &&
+			//	w_min.z < max.z && w_min.z > min.z) ||
 
-				(w_max.x < max.x && w_max.x > min.x &&
-				w_max.z < max.z && w_max.z > min.z) ||
-				
-				(w_min.x < min.x && w_max.x > max.x &&
-				w_min.z < min.z && w_max.z > max.z)
-				
-				)
+			//	(w_max.x < max.x && w_max.x > min.x &&
+			//	w_max.z < max.z && w_max.z > min.z) ||
+			//	
+			//	(w_min.x < min.x && w_max.x > max.x &&
+			//	w_min.z < min.z && w_max.z > max.z)
+			//	
+			//	)
 
+			if (w_min.x < max.x &&
+				w_max.x > min.x &&
+				w_min.z < max.z &&
+				w_max.z > min.z)
 			//if (((min.x <= position.x) && (position.x <= max.x)) &&
 			//	((min.z <= position.z) && (position.z <= max.z)))
 			{
@@ -124,6 +137,12 @@ void CGrid::Update(vector<EntityBase*>* migrationList)
 			}
 		}
 	}
+
+	while (ToBeRemovedIndex.size() > 0)
+	{
+		ListOfObjects.erase(ListOfObjects.begin() + ToBeRemovedIndex.back());
+		ToBeRemovedIndex.pop_back();
+	}
 }
 
 /********************************************************************************
@@ -144,15 +163,15 @@ void CGrid::Render(void)
 		}
 		else
 		{
-			bool wallhere = false;
+			bool objecthere = false;
 			for (int i = 0; i < ListOfObjects.size(); ++i)
 			{
-				if (ListOfObjects[i]->GetType() == EntityBase::EntityType::T_WALL)
+				if (ListOfObjects[i]->HasCollider())
 				{
-					wallhere = true;
+					objecthere = true;
 				}
 			}
-			if (wallhere)
+			if (objecthere)
 			{
 				RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("GRIDMESH_WHITE"));
 			}

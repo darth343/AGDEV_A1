@@ -7,7 +7,6 @@ class CWall :
 	public GenericEntity
 {
 protected:
-	Vector3 position;
 	Vector3 rotationAxis;
 	float rotation;
 public:
@@ -26,10 +25,11 @@ public:
 	Vector3 GetRotationAxis();
 	// Get Rotation
 	float GetRotation();
-	// Get Min vector
-	Vector3 GetMin();
-	// Get Max vector
-	Vector3 GetMax();
+
+	//Vector3 GetMin();
+
+	//Vector3 GetMax();
+
 	// Update
 	void Update(double dt = 0.0333f);
 

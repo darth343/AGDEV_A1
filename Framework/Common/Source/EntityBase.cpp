@@ -6,7 +6,6 @@ EntityBase::EntityBase()
 	, isDone(false)
 	, m_bCollider(false)
 	, bLaser(false)
-	, type(T_NIL)
 {
 }
 

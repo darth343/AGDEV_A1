@@ -48,9 +48,7 @@ void CEnemy::Init()
 	this->SetAABB(Vector3(1,1,1), Vector3(-1, -1, -1));
 
 	// Add the EntityManager
-	EntityManager::GetInstance()->AddEntity(this, true);
-	SetType(T_ENEMY);
-}
+	EntityManager::GetInstance()->AddEntity(this, true);}
 
 // Reset this player instance to default
 void CEnemy::Reset()

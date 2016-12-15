@@ -19,7 +19,7 @@ void EntityManager::Update(double _dt)
 	}
 
 	// Render the Scene Graph
-	CSceneGraph::GetInstance()->Update();
+	//CSceneGraph::GetInstance()->Update();
 
 	// Render the Spatial Partition
 	if (theSpatialPartition)
@@ -35,7 +35,7 @@ void EntityManager::Update(double _dt)
 		if ((*it)->IsDone())
 		{
 			// Delete if done
-			delete *it;
+			//delete *it;
 			it = entityList.erase(it);
 		}
 		else
@@ -57,7 +57,7 @@ void EntityManager::Render()
 		(*it)->Render();
 	}
 
-	// Render the Scene Graph
+	// Render the Scene Graph5
 	CSceneGraph::GetInstance()->Render();
 
 	//// Render the Spatial Partition

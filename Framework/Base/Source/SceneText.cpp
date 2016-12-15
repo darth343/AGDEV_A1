@@ -133,6 +133,14 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
 	MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
 
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead", "OBJ//robotHead.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHead")->textureID = LoadTGA("Image//robotHead.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotBody", "OBJ//robotBody.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotBody")->textureID = LoadTGA("Image//robotBody.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHand", "OBJ//robotHand.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHand")->textureID = LoadTGA("Image//robotHand.tga");
 
 	// Gun
 	MeshBuilder::GetInstance()->GenerateOBJ("gun", "OBJ//gun.obj");
@@ -261,10 +269,10 @@ void SceneText::Init()
 	theEnemy->Init();
 	theEnemy->SetTerrain(groundEntity);
 
-	CWall* theWall = new CWall();
-	theWall->SetRotation(90.f);
-	theWall->SetScale(Vector3(10, 10, 10));
-	theWall->SetPosition(Vector3(0, 0, 0));
+	theWall = new CWall();
+	theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
+	theWall->SetScale(Vector3(100, 10, 10));
+	theWall->SetPos(Vector3(0, 0, 0));
 }
 
 void SceneText::Update(double dt)
@@ -319,29 +327,13 @@ void SceneText::Update(double dt)
 		CSpatialPartition::GetInstance()->PrintSelf();
 	}
 
-	// if the left mouse button was released
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
-	{
-		cout << "Left Mouse Button was released!" << endl;
-	}
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
-	{
-		cout << "Right Mouse Button was released!" << endl;
-	}
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::MMB))
-	{
-		cout << "Middle Mouse Button was released!" << endl;
-	}
-	if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) != 0.0)
-	{
-		cout << "Mouse Wheel has offset in X-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) << endl;
-	}
-	if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) != 0.0)
-	{
-		cout << "Mouse Wheel has offset in Y-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) << endl;
-	}
-	// <THERE>
-
+	static float x = 0;
+	static float z = 0;
+	if (KeyboardController::GetInstance()->IsKeyDown('G'))
+		z -= (float)(100.f * dt);
+	if (KeyboardController::GetInstance()->IsKeyDown('H'))
+		z += (float)(100.f * dt);
+	theWall->SetPos(Vector3(x, 0, z));
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 

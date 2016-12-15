@@ -6,17 +6,6 @@
 class EntityBase
 {
 public:
-	enum EntityType
-	{
-		T_NIL = 0,
-		T_ENEMY,
-		T_LASER,
-		T_BULLET,
-		T_GRENADE,
-		T_WALL,
-		T_SKYBOX,
-		T_GROUND, 
-	};
 	EntityBase();
 	virtual ~EntityBase();
 
@@ -29,10 +18,6 @@ public:
 
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
-
-
-	inline void SetType(EntityType _type){ type = _type; }
-	inline EntityType GetType(){ return type; }
 
 	bool IsDone();
 	void SetIsDone(const bool _value);
@@ -49,7 +34,6 @@ public:
 protected:
 	Vector3 position;
 	Vector3 scale;
-	EntityType type;
 
 	bool isDone;
 	bool m_bCollider;

@@ -235,9 +235,17 @@ int CSpatialPartition::GetzNumOfGrid(void) const
 /********************************************************************************
  Get a particular grid
  ********************************************************************************/
-CGrid CSpatialPartition::GetGrid(const int xIndex, const int yIndex) const
+CGrid CSpatialPartition::GetGrid(const int xIndex, const int zIndex) const
 {
-	return theGrid[ xIndex*zNumOfGrid + yIndex ];
+	return theGrid[ xIndex*zNumOfGrid + zIndex ];
+}
+
+CGrid* CSpatialPartition::GetGrid(Vector3 position) const
+{
+	// Get the indices of the object's position
+	int xIndex = (((int)position.x - (-xSize >> 1)) / (xSize / xNumOfGrid));
+	int zIndex = (((int)position.z - (-zSize >> 1)) / (zSize / zNumOfGrid));
+	return &theGrid[xIndex*zNumOfGrid + zIndex];
 }
 
 /********************************************************************************
@@ -257,9 +265,9 @@ vector<EntityBase*> CSpatialPartition::GetObjects(Vector3 position)
  ********************************************************************************/
 void CSpatialPartition::Add(EntityBase* theObject)
 {
-	if (theObject->GetType() == EntityBase::EntityType::T_WALL)
+	if (theObject->HasCollider())
 	{
-		CWall* temp = dynamic_cast<CWall*>(theObject);
+		GenericEntity* temp = dynamic_cast<GenericEntity*>(theObject);
 		int minIndexX = (((int)temp->GetMin().x - (-xSize >> 1)) / (xSize / xNumOfGrid));
 		int maxIndexX = (((int)temp->GetMax().x - (-xSize >> 1)) / (xSize / xNumOfGrid));
 		int minIndexZ = (((int)temp->GetMin().z - (-zSize >> 1)) / (zSize / zNumOfGrid));

@@ -34,11 +34,29 @@ void GenericEntity::Render()
 	modelStack.PopMatrix();
 }
 
-// Set the maxAABB and minAABB
-void GenericEntity::SetAABB(Vector3 maxAABB, Vector3 minAABB)
+//// Set the maxAABB and minAABB
+//void GenericEntity::SetAABB(Vector3 maxAABB, Vector3 minAABB)
+//{
+//	this->maxAABB = maxAABB;
+//	this->minAABB = minAABB;
+//}
+
+Vector3 GenericEntity::GetMin()
 {
-	this->maxAABB = maxAABB;
-	this->minAABB = minAABB;
+	Vector3 min;
+	min.x = CCollider::GetMinAABB().x * scale.x + position.x;
+	min.y = CCollider::GetMinAABB().y * scale.y + position.y;
+	min.z = CCollider::GetMinAABB().z * scale.z + position.z;
+	return min;
+}
+
+Vector3 GenericEntity::GetMax()
+{
+	Vector3 max;
+	max.x = CCollider::GetMaxAABB().x * scale.x + position.x;
+	max.y = CCollider::GetMaxAABB().y * scale.y + position.y;
+	max.z = CCollider::GetMaxAABB().z * scale.z + position.z;
+	return max;
 }
 
 GenericEntity* Create::Entity(	const std::string& _meshName, 

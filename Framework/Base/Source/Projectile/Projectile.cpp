@@ -12,8 +12,8 @@ CProjectile::CProjectile(void)
 	, m_fLifetime(-1.0f)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
+	,GenericEntity(NULL)
 {
-	SetType(T_BULLET);
 }
 
 CProjectile::CProjectile(Mesh* _modelMesh)
@@ -23,8 +23,8 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	, m_fLifetime(-1)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
+	, GenericEntity(NULL)
 {
-	SetType(T_BULLET);
 }
 
 CProjectile::~CProjectile(void)

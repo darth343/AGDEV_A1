@@ -277,9 +277,9 @@ void CPlayerInfo::CheckWallCollision(Vector3& nextPos)
 	bool moveZ = true;
 	for (int i = 0; i < ObjectList.size(); i++)
 	{
-		if (ObjectList[i]->GetType() == EntityBase::EntityType::T_WALL)
+		if (ObjectList[i]->HasCollider())
 		{
-			CWall* Wall = dynamic_cast<CWall*>(ObjectList[i]);
+			GenericEntity* Wall = dynamic_cast<GenericEntity*>(ObjectList[i]);
 			if (moveX)
 			{
 				if (nextPos.x > Wall->GetMin().x && nextPos.x < Wall->GetMax().x)
@@ -460,6 +460,8 @@ void CPlayerInfo::UpdateCamera(double dt)
 void CPlayerInfo::Update(double dt)
 {
 	UpdateCamera(dt);
+
+	CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
 	// Update the weapons
 	if (KeyboardController::GetInstance()->IsKeyReleased('R'))
 	{

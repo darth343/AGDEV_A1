@@ -2,11 +2,12 @@
 #include "EntityBase.h"
 #include "Vector3.h"
 #include "Collider/Collider.h"
+#include "../GenericEntity.h"
 
 class Mesh;
 class CPlayerInfo;
 
-class CProjectile : public EntityBase, public CCollider
+class CProjectile : public GenericEntity
 {
 public:
 	CProjectile(void);

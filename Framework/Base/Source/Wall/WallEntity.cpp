@@ -5,12 +5,10 @@
 
 CWall::CWall()
 : GenericEntity(NULL)
-, position(Vector3(0.f, 0.f, 0.f))
 , rotationAxis(0, 1, 0)
 , rotation(0.f)
 {
-	InitLOD("cube", "cubeSG", "sphere");
-	SetType(T_WALL);
+	InitLOD("cubeSG", "cubeSG", "sphere");
 	// Initialize the Collider
 	this->SetCollider(true);
 	this->SetAABB(Vector3(1, 1, 1), Vector3(-1, -1, -1));
@@ -53,25 +51,25 @@ float CWall::GetRotation()
 	return rotation;
 }
 
-Vector3 CWall::GetMin()
-{
-	Vector3 min;
-	min.x = GetMinAABB().x * scale.x;
-	min.y = GetMinAABB().y * scale.y;
-	min.z = GetMinAABB().z * scale.z;
-
-	return min;
-}
-
-Vector3 CWall::GetMax()
-{
-	Vector3 max;
-	max.x = GetMaxAABB().x * scale.x;
-	max.y = GetMaxAABB().y * scale.y;
-	max.z = GetMaxAABB().z * scale.z;
-
-	return max;
-}
+//Vector3 CWall::GetMin()
+//{
+//	Vector3 min;
+//	min.x = GetMinAABB().x * scale.x + position.x;
+//	min.y = GetMinAABB().y * scale.y + position.y;
+//	min.z = GetMinAABB().z * scale.z + position.z;
+//
+//	return min;
+//}
+//
+//Vector3 CWall::GetMax()
+//{
+//	Vector3 max;
+//	max.x = GetMaxAABB().x * scale.x + position.x;
+//	max.y = GetMaxAABB().y * scale.y + position.y;
+//	max.z = GetMaxAABB().z * scale.z + position.z;
+//
+//	return max;
+//}
 
 void CWall::Update(double dt)
 {
