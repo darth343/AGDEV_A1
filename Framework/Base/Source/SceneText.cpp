@@ -146,6 +146,18 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateOBJ("gun", "OBJ//gun.obj");
 	MeshBuilder::GetInstance()->GetMesh("gun")->textureID = LoadTGA("Image//gun.tga");
 
+	// Bullet
+	//MeshBuilder::GetInstance()->GenerateOBJ("bullet", "OBJ//bullet.obj");
+	//MeshBuilder::GetInstance()->GetMesh("bullet")->textureID = LoadTGA("Image//bullet.tga");
+	MeshBuilder::GetInstance()->GenerateSphere("bullet", Color(0.3, 0.3, 0.3), 18, 36, 0.3f);
+
+	// Enemy house
+	MeshBuilder::GetInstance()->GenerateOBJ("enemyhouse", "OBJ//enemy_house.obj");
+	MeshBuilder::GetInstance()->GetMesh("enemyhouse")->textureID = LoadTGA("Image//chair.tga");
+
+	// Fortress
+	//MeshBuilder::GetInstance()->GenerateOBJ("fortress", "OBJ//fortress.obj");
+	//MeshBuilder::GetInstance()->GetMesh("gun")->textureID = LoadTGA("Image//gun.tga");
 
 
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
@@ -269,10 +281,24 @@ void SceneText::Init()
 	theEnemy->Init();
 	theEnemy->SetTerrain(groundEntity);
 
+
 	theWall = new CWall();
 	theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
 	theWall->SetScale(Vector3(100, 10, 10));
 	theWall->SetPos(Vector3(0, 0, 0));
+
+	CWall* enemyHouse = new CWall();
+	enemyHouse->SetScale(Vector3(5, 5, 5));
+	enemyHouse->SetPosition(Vector3(-100, -5, -100));
+	enemyHouse->InitLOD("enemyhouse", "cube", "cubeSG");
+	enemyHouse->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
+
+	//CWall* fortress = new CWall();
+	//fortress->SetScale(Vector3(5, 5, 5));
+	//fortress->SetPosition(Vector3(0, 0, -100));
+	//fortress->InitLOD("fortress", "cube", "cubeSG");
+
+
 }
 
 void SceneText::Update(double dt)

@@ -50,6 +50,7 @@ CPlayerInfo::~CPlayerInfo(void)
 // Initialise this class instance
 void CPlayerInfo::Init(void)
 {
+
 	// Set the default values
 	defaultPosition.Set(0,0,10);
 	defaultTarget.Set(0,0,0);
@@ -461,7 +462,7 @@ void CPlayerInfo::Update(double dt)
 {
 	UpdateCamera(dt);
 
-	CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
+	//CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
 	// Update the weapons
 	if (KeyboardController::GetInstance()->IsKeyReleased('R'))
 	{
@@ -486,6 +487,7 @@ void CPlayerInfo::Update(double dt)
 	{
 		if (primaryWeapon)
 			primaryWeapon->Discharge(position, target, this);
+
 	}
 	else if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
