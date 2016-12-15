@@ -156,8 +156,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("enemyhouse")->textureID = LoadTGA("Image//chair.tga");
 
 	// Fortress
-	//MeshBuilder::GetInstance()->GenerateOBJ("fortress", "OBJ//fortress.obj");
-	//MeshBuilder::GetInstance()->GetMesh("gun")->textureID = LoadTGA("Image//gun.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("fortress", "OBJ//fortress.obj");
+	MeshBuilder::GetInstance()->GetMesh("fortress")->textureID = LoadTGA("Image//chair.tga");
 
 
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
@@ -282,22 +282,22 @@ void SceneText::Init()
 	theEnemy->SetTerrain(groundEntity);
 
 
-	theWall = new CWall();
-	theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
-	theWall->SetScale(Vector3(100, 10, 10));
-	theWall->SetPos(Vector3(0, 0, 0));
+	//theWall = new CWall();
+	//theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
+	//theWall->SetScale(Vector3(100, 10, 10));
+	//theWall->SetPos(Vector3(0, 0, 0));
 
 	CWall* enemyHouse = new CWall();
-	enemyHouse->SetScale(Vector3(1, 1, 1));
-	enemyHouse->SetPosition(Vector3(-100, -5, -100));
-	enemyHouse->InitLOD("enemyhouse", "cube", "cubeSG");
-	enemyHouse->SetAABB(Vector3(8, 0.5, 14), Vector3(-20, -0.5, -11));
+	enemyHouse->SetScale(Vector3(1.3, 1, 1.3));
+	enemyHouse->SetPosition(Vector3(0, -5, 80));
+	enemyHouse->InitLOD("enemyhouse", "enemyhouse", "cube");
+	enemyHouse->SetAABB(Vector3(14, 0.5, 9), Vector3(-23, -0.5, -14));
 
-	//CWall* fortress = new CWall();
-	//fortress->SetScale(Vector3(5, 5, 5));
-	//fortress->SetPosition(Vector3(0, 0, -100));
-	//fortress->InitLOD("fortress", "cube", "cubeSG");
-
+	CWall* fortress = new CWall();
+	fortress->SetScale(Vector3(1.3, 1.3, 1));
+	fortress->SetPosition(Vector3(0, -5, -80));
+	fortress->InitLOD("fortress", "fortress", "cubeSG");
+	fortress->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
 
 }
 
@@ -359,7 +359,7 @@ void SceneText::Update(double dt)
 		z -= (float)(100.f * dt);
 	if (KeyboardController::GetInstance()->IsKeyDown('H'))
 		z += (float)(100.f * dt);
-	theWall->SetPos(Vector3(x, 0, z));
+	//theWall->SetPos(Vector3(x, 0, z));
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 
