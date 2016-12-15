@@ -23,6 +23,7 @@
     <ClCompile Include="Source\OBJMesh.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Grenade.cpp" />
+    <ClCompile Include="Source\Projectile\HitScan.cpp" />
     <ClCompile Include="Source\Projectile\Laser.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
     <ClCompile Include="Source\SceneGraph\SceneGraph.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Source\OBJMesh.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Grenade.h" />
+    <ClInclude Include="Source\Projectile\HitScan.h" />
     <ClInclude Include="Source\Projectile\Laser.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
     <ClInclude Include="Source\SceneGraph\SceneGraph.h" />

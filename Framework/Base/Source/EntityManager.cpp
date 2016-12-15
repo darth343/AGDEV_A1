@@ -2,6 +2,7 @@
 #include "EntityBase.h"
 #include "Collider/Collider.h"
 #include "Projectile/Laser.h"
+#include "Projectile/HitScan.h"
 #include "SceneGraph\SceneGraph.h"
 
 #include <iostream>
@@ -13,13 +14,14 @@ void EntityManager::Update(double _dt)
 	// Update all entities
 	std::list<EntityBase*>::iterator it, end;
 	end = entityList.end();
+
 	for (it = entityList.begin(); it != end; ++it)
 	{
 		(*it)->Update(_dt);
 	}
 
 	// Render the Scene Graph
-	//CSceneGraph::GetInstance()->Update();
+	CSceneGraph::GetInstance()->Update();
 
 	// Render the Spatial Partition
 	if (theSpatialPartition)
@@ -54,6 +56,7 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if ((*it)->ShouldBeRendered())
 		(*it)->Render();
 	}
 
@@ -337,7 +340,7 @@ bool EntityManager::CheckForCollision(void)
 		if ((*colliderThis)->GetIsLaser())
 		{
 			// Dynamic cast it to a CLaser class
-			CLaser* thisEntity = dynamic_cast<CLaser*>(*colliderThis);
+			CHitScan* thisEntity = dynamic_cast<CHitScan*>(*colliderThis);
 
 			// Check for collision with another collider class
 			colliderThatEnd = entityList.end();
@@ -352,12 +355,12 @@ bool EntityManager::CheckForCollision(void)
 					Vector3 hitPosition = Vector3(0, 0, 0);
 
 					// Get the minAABB and maxAABB for (*colliderThat)
-					CCollider *thatCollider = dynamic_cast<CCollider*>(*colliderThat);
-					Vector3 thatMinAABB = (*colliderThat)->GetPosition() + thatCollider->GetMinAABB();
-					Vector3 thatMaxAABB = (*colliderThat)->GetPosition() + thatCollider->GetMaxAABB();
+					GenericEntity *thatCollider = dynamic_cast<GenericEntity*>(*colliderThat);
+					Vector3 thatMinAABB = thatCollider->GetMin();
+					Vector3 thatMaxAABB = thatCollider->GetMax();
 
 					if (CheckLineSegmentPlane(	thisEntity->GetPosition(), 
-												thisEntity->GetPosition() - thisEntity->GetDirection() * thisEntity->GetLength(),
+												thisEntity->GetPosition() + thisEntity->GetDirection() * thisEntity->GetLength(),
 												thatMinAABB, thatMaxAABB,
 												hitPosition) == true)
 					{

@@ -31,6 +31,9 @@ public:
 	// Get the flag, bLaser
 	virtual bool GetIsLaser(void) const;
 
+	void SetShouldRender(bool should);
+	bool ShouldBeRendered();
+
 protected:
 	Vector3 position;
 	Vector3 scale;
@@ -38,6 +41,7 @@ protected:
 	bool isDone;
 	bool m_bCollider;
 	bool bLaser;
+	bool visible;
 };
 
 #endif // ENTITY_BASE_H

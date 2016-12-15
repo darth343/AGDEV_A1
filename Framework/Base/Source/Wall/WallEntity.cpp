@@ -2,6 +2,7 @@
 #include "../EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "MeshBuilder.h"
 
 CWall::CWall()
 : GenericEntity(NULL)
@@ -90,4 +91,26 @@ void CWall::Render()
 			RenderHelper::RenderMesh(GetLODMesh());
 	}
 	modelStack.PopMatrix();
+}
+
+CWall* Create::Wall(const std::string& High,
+	const std::string& Med,
+	const std::string& Low,
+	const Vector3& _position,
+	const Vector3& _scale)
+{
+	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(High);
+	if (modelMesh == nullptr)
+		return nullptr;
+
+	CWall* result = new CWall();
+
+	if (modelMesh->Min.IsZero() || modelMesh->Max.IsZero())
+		result->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
+	else
+		result->SetAABB(modelMesh->Max, modelMesh->Min);
+	result->InitLOD(High, Med, Low);
+	result->SetScale(_scale);
+	result->SetPos(_position);
+	return result;
 }

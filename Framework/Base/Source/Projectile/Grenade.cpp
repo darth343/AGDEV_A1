@@ -55,7 +55,7 @@ void CGrenade::Update(double dt)
 		{
 			// Remove from Scene Graph
 			ExportList[i]->SetIsDone(true);
-			//if (CSceneGraph::GetInstance()->DeleteNode(ExportList[i]) == true)
+			if (CSceneGraph::GetInstance()->DeleteNode(ExportList[i]) == true)
 			{
 				cout << "*** This Entity removed ***" << endl;
 			}

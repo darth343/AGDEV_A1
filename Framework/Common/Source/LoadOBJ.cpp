@@ -152,11 +152,15 @@ void IndexVBO(
 	std::vector<Vector3> & in_normals,
 
 	std::vector<unsigned> & out_indices,
-	std::vector<Vertex> & out_vertices
+	std::vector<Vertex> & out_vertices,
+	Vector3& Min,
+	Vector3& Max
 )
 {
 	std::map<PackedVertex,unsigned short> VertexToOutIndex;
 
+	Min.Set(9999, 9999, 9999);
+	Max.Set(-9999, -9999, -9999);
 	// For each input vertex
 	for(unsigned int i = 0; i < in_vertices.size(); ++i) 
 	{
@@ -177,6 +181,25 @@ void IndexVBO(
 			// If not, it needs to be added in the output data.
 			Vertex v;
 			v.pos.Set(in_vertices[i].x, in_vertices[i].y, in_vertices[i].z);
+
+			if (Min.x > v.pos.x)
+				Min.x = v.pos.x;
+
+			if (Max.x < v.pos.x)
+				Max.x = v.pos.x;
+
+			if (Min.y > v.pos.y)
+				Min.y = v.pos.y;
+
+			if (Max.y < v.pos.y)
+				Max.y = v.pos.y;
+
+			if (Min.z > v.pos.z)
+				Min.z = v.pos.z;
+
+			if (Max.z < v.pos.z)
+				Max.z = v.pos.z;
+
 			v.texCoord.Set(in_uvs[i].u, in_uvs[i].v);
 			v.normal.Set(in_normals[i].x, in_normals[i].y, in_normals[i].z);
 			v.color.Set(1, 1, 1);

@@ -37,3 +37,11 @@ public:
 	void Render();
 };
 
+namespace Create
+{
+	CWall* Wall(const std::string& High,
+		const std::string& Med,
+		const std::string& Low,
+		const Vector3& _position,
+		const Vector3& _scale = Vector3(1.0f, 1.0f, 1.0f));
+};

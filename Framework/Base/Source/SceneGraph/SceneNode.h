@@ -58,6 +58,7 @@ public:
 	// PrintSelf for debug purposes
 	void PrintSelf(const int numTabs = 0);
 
+	Vector3 GetWorldPosition(Vector3& position = Vector3(0, 0, 0));
 protected:
 	int			ID;
 	EntityBase* theEntity;

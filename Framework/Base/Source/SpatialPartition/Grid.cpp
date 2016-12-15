@@ -6,6 +6,7 @@
 #include "../PlayerInfo/PlayerInfo.h"
 #include "../Wall/WallEntity.h"
 
+
 /********************************************************************************
 Constructor
 ********************************************************************************/
@@ -67,7 +68,7 @@ Update the grid
 ********************************************************************************/
 void CGrid::Update(vector<EntityBase*>* migrationList)
 {
-	std::vector<int> ToBeRemovedIndex;
+	std::vector<std::vector<EntityBase*>::iterator> ToBeRemoved;
 	// Check each object to see if they are no longer in this grid
 	std::vector<EntityBase*>::iterator it;
 	it = ListOfObjects.begin();
@@ -77,8 +78,8 @@ void CGrid::Update(vector<EntityBase*>* migrationList)
 		//if (object->GetType() == EntityBase::EntityType::T_WALL)
 		if (object->IsDone())
 		{
+			ToBeRemoved.push_back(it);
 			++it;
-			ToBeRemovedIndex.push_back(index);
 			continue;
 		}
 		if (object->HasCollider())
@@ -100,10 +101,10 @@ void CGrid::Update(vector<EntityBase*>* migrationList)
 			//	
 			//	)
 
-			if (w_min.x < max.x &&
-				w_max.x > min.x &&
-				w_min.z < max.z &&
-				w_max.z > min.z)
+			if (w_min.x > max.x &&
+				w_max.x < min.x &&
+				w_min.z > max.z &&
+				w_max.z < min.z)
 			//if (((min.x <= position.x) && (position.x <= max.x)) &&
 			//	((min.z <= position.z) && (position.z <= max.z)))
 			{
@@ -138,10 +139,10 @@ void CGrid::Update(vector<EntityBase*>* migrationList)
 		}
 	}
 
-	while (ToBeRemovedIndex.size() > 0)
+	while (ToBeRemoved.size() > 0)
 	{
-		ListOfObjects.erase(ListOfObjects.begin() + ToBeRemovedIndex.back());
-		ToBeRemovedIndex.pop_back();
+		ListOfObjects.erase(ToBeRemoved.back());
+		ToBeRemoved.pop_back();
 	}
 }
 

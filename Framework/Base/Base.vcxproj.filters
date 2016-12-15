@@ -129,6 +129,9 @@
     <ClCompile Include="Source\Wall\WallEntity.cpp">
       <Filter>Wall</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Projectile\HitScan.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="Source\Wall\WallEntity.h">
       <Filter>Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile\HitScan.h">
+      <Filter>Projectile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

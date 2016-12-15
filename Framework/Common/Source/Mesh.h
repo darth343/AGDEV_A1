@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Material.h"
+#include "Vector3.h"
 
 class Mesh
 {
@@ -24,6 +25,9 @@ public:
 	unsigned vertexBuffer;
 	unsigned indexBuffer;
 	unsigned indexSize;
+
+	Vector3 Min;
+	Vector3 Max;
 
 	Material material;
 	unsigned textureID;

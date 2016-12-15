@@ -51,12 +51,12 @@ CPlayerInfo::~CPlayerInfo(void)
 void CPlayerInfo::Init(void)
 {
 	// Set the default values
-	defaultPosition.Set(0,0,10);
+	defaultPosition.Set(0,0,-20);
 	defaultTarget.Set(0,0,0);
 	defaultUp.Set(0,1,0);
 
 	// Set the current values
-	position.Set(0, 0, 10);
+	position.Set(0, 0, -20);
 	target.Set(0, 0, 0);
 	up.Set(0, 1, 0);
 
@@ -275,6 +275,9 @@ void CPlayerInfo::CheckWallCollision(Vector3& nextPos)
 	vector<EntityBase*> ObjectList = CSpatialPartition::GetInstance()->GetObjects(nextPos);
 	bool moveX = true;
 	bool moveZ = true;
+
+	float boxSize = 4;
+
 	for (int i = 0; i < ObjectList.size(); i++)
 	{
 		if (ObjectList[i]->HasCollider())
@@ -282,9 +285,9 @@ void CPlayerInfo::CheckWallCollision(Vector3& nextPos)
 			GenericEntity* Wall = dynamic_cast<GenericEntity*>(ObjectList[i]);
 			if (moveX)
 			{
-				if (nextPos.x > Wall->GetMin().x && nextPos.x < Wall->GetMax().x)
+				if (nextPos.x > Wall->GetMin().x - boxSize && nextPos.x < Wall->GetMax().x + boxSize)
 				{
-					if ((position.z > Wall->GetMin().z && position.z < Wall->GetMax().z))
+					if ((position.z > Wall->GetMin().z - boxSize && position.z < Wall->GetMax().z + boxSize))
 					{
 						moveX = false;
 					}
@@ -292,9 +295,9 @@ void CPlayerInfo::CheckWallCollision(Vector3& nextPos)
 			}
 			if (moveZ)
 			{
-				if (nextPos.z > Wall->GetMin().z && nextPos.z < Wall->GetMax().z)
+				if (nextPos.z > Wall->GetMin().z - boxSize && nextPos.z < Wall->GetMax().z + boxSize)
 				{
-					if ((position.x > Wall->GetMin().x && position.x < Wall->GetMax().x))
+					if ((position.x > Wall->GetMin().x - boxSize && position.x < Wall->GetMax().x + boxSize))
 					{
 						moveZ = false;
 					}

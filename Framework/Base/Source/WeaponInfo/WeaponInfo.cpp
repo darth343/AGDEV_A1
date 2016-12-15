@@ -1,6 +1,6 @@
 #include "WeaponInfo.h"
 #include "../Projectile/Projectile.h"
-
+#include "../Projectile/HitScan.h"
 #include <iostream>
 using namespace std;
 
@@ -146,14 +146,19 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _sour
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			CProjectile* aProjectile = Create::Projectile("cube", 
-															position, 
-															(target - position).Normalized(), 
-															2.0f, 
-															10.0f,
-															_source);
-			aProjectile->SetCollider(true);
-			aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+			//CProjectile* aProjectile = Create::Projectile("cube", 
+			//												position, 
+			//												(target - position).Normalized(), 
+			//												2.0f, 
+			//												10.0f,
+			//												_source);
+			//aProjectile->SetCollider(true);
+			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+			CHitScan* aHitScan = Create::HitScan("cube",
+				position,
+				(target - position).Normalized());
+			aHitScan->SetIsLaser(true);
+			aHitScan->SetCollider(false);
 			bFire = false;
 			magRounds--;
 		}

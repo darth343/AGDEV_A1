@@ -6,6 +6,8 @@
 Mesh::Mesh(const std::string &meshName)
 	: name(meshName)
 	, mode(DRAW_TRIANGLES)
+	, Min(Vector3(0,0,0))
+	, Max(Vector3(0, 0, 0))
 {
 	glGenBuffers(1, &vertexBuffer);
 	glGenBuffers(1, &indexBuffer);

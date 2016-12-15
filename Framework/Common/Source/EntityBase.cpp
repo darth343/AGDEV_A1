@@ -6,6 +6,7 @@ EntityBase::EntityBase()
 	, isDone(false)
 	, m_bCollider(false)
 	, bLaser(false)
+	, visible(true)
 {
 }
 
@@ -57,4 +58,14 @@ void EntityBase::SetIsLaser(const bool bLaser)
 bool EntityBase::GetIsLaser(void) const
 {
 	return bLaser;
+}
+
+void EntityBase::SetShouldRender(bool should)
+{
+	visible = should;
+}
+
+bool EntityBase::ShouldBeRendered()
+{
+	return visible;
 }

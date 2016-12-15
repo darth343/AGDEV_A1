@@ -18,7 +18,9 @@ void IndexVBO(
 	std::vector<Vector3> & in_normals,
 
 	std::vector<unsigned> & out_indices,
-	std::vector<Vertex> & out_vertices
+	std::vector<Vertex> & out_vertices,
+	Vector3& Min = Vector3(0, 0, 0),
+	Vector3& Max = Vector3(0, 0, 0)
 );
 
 #endif

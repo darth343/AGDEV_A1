@@ -71,6 +71,7 @@ GenericEntity* Create::Entity(	const std::string& _meshName,
 	result->SetPosition(_position);
 	result->SetScale(_scale);
 	result->SetCollider(false);
+	result->SetAABB(modelMesh->Max, modelMesh->Min);
 	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }

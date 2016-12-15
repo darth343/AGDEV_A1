@@ -137,7 +137,7 @@ bool CSceneNode::DeleteChild(EntityBase* theEntity)
 				}
 			}
 		}
-		return true;
+		//return true;
 	}
 
 	return false;
@@ -354,6 +354,23 @@ void CSceneNode::Update(void)
 	{
 		(*it)->Update();
 	}
+}
+
+Vector3 CSceneNode::GetWorldPosition(Vector3& position)
+{
+	Vector3 temp;
+	if (theParent != NULL)
+	{
+		theParent->GetWorldPosition(position);
+		GetTranslate(temp.x, temp.y, temp.z);
+		position += temp;
+	}
+	else
+	{
+		GetTranslate(temp.x, temp.y, temp.z);
+		position += temp;
+	}
+	return position;
 }
 // Render the Scene Graph
 void CSceneNode::Render(void)

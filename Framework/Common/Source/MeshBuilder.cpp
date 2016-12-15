@@ -450,10 +450,11 @@ Mesh* MeshBuilder::GenerateOBJ(const std::string &meshName, const std::string &f
 
 	std::vector<Vertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
-	
-	IndexVBO(vertices, uvs, normals, index_buffer_data, vertex_buffer_data);
 
 	Mesh *mesh = new Mesh(meshName);
+
+	IndexVBO(vertices, uvs, normals, index_buffer_data, vertex_buffer_data, mesh->Min, mesh->Max);
+
 	
 	mesh->mode = Mesh::DRAW_TRIANGLES;
 	

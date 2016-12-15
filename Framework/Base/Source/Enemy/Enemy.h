@@ -1,6 +1,8 @@
 #pragma once
 #include "../GenericEntity.h"
 #include "../GroundEntity.h"
+#include "../SceneGraph/SceneNode.h"
+#include "../SceneGraph/SceneGraph.h"
 
 class Mesh;
 
@@ -9,12 +11,25 @@ class CEnemy :
 {
 protected:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
+	Vector3 prevPosition;
 	Vector3 target, up;
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
 
 	double m_dSpeed;
 	double m_dAcceleration;
+
+	CSceneNode* BodyNode;
+	Vector3 RHandOffset;
+	CSceneNode* RHandNode;
+	Vector3 LHandOffset;
+	CSceneNode* LHandNode;
+	Vector3 HeadOffset;
+	CSceneNode* HeadNode;
+	
+	GenericEntity* HeadEntity;
+	GenericEntity* LHandEntity;
+	GenericEntity* RHandEntity;
 public:
 	CEnemy();
 	virtual ~CEnemy();
@@ -44,7 +59,7 @@ public:
 
 	// Update
 	void Update(double dt = 0.0333f);
-
+	void UpdateMatrices();
 	// Constrain the position within the borders
 	void Constrain();
 

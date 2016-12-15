@@ -201,7 +201,7 @@ void SceneText::Init()
 
 	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	aCube->SetCollider(true);
-	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	//aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 	aCube->InitLOD("cube", "sphere", "cubeSG");
 
 	// Add the pointer to this new entity to the Scene Graph
@@ -213,7 +213,7 @@ void SceneText::Init()
 
 	GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
 	anotherCube->SetCollider(true);
-	anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	//anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 	CSceneNode* anotherNode = theNode->AddChild(anotherCube);
 	if (anotherNode == NULL)
 	{
@@ -221,12 +221,13 @@ void SceneText::Init()
 	}
 	
 	GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
+
 	CSceneNode* baseNode = CSceneGraph::GetInstance()->AddNode(baseCube);
 
 	CUpdateTransformation* baseMtx = new CUpdateTransformation();
 	baseMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
 	baseMtx->SetSteps(-60, 60);
-	baseNode->SetUpdateTransformation(false);
+	baseNode->SetUpdateTransformation(baseMtx);
 
 	GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
 	CSceneNode* childNode = baseNode->AddChild(childCube);
@@ -235,13 +236,14 @@ void SceneText::Init()
 	GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
 	CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
 	grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.0f);
+
 	CUpdateTransformation* aRotateMtx = new CUpdateTransformation();
 	aRotateMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
 	aRotateMtx->SetSteps(-120, 60);
-	grandchildNode->SetUpdateTransformation(false);
+	grandchildNode->SetUpdateTransformation(aRotateMtx);
 	
 	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
-//	Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));
+	//Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
 
 	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
@@ -269,10 +271,14 @@ void SceneText::Init()
 	theEnemy->Init();
 	theEnemy->SetTerrain(groundEntity);
 
-	theWall = new CWall();
-	theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
-	theWall->SetScale(Vector3(100, 10, 10));
-	theWall->SetPos(Vector3(0, 0, 0));
+	//theWall = new CWall();
+	//theWall->SetAABB(Vector3(0.5, 0.5, 0.5), Vector3(-0.5, -0.5, -0.5));
+	//theWall->SetScale(Vector3(100, 10, 10));
+	//theWall->SetPos(Vector3(0, 0, 0));
+
+	theWall = Create::Wall("cube", "cubeSG", "sphere",
+		Vector3(0, 0, 0),
+		Vector3(100, 10, 10));
 }
 
 void SceneText::Update(double dt)

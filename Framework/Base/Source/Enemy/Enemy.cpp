@@ -2,6 +2,9 @@
 #include "../EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "../PlayerInfo/PlayerInfo.h"
+
+#define Vector3ToTripleFloat(var)var.x, var.y, var.z
 
 CEnemy::CEnemy()
 : GenericEntity(NULL)
@@ -13,7 +16,9 @@ CEnemy::CEnemy()
 , maxBoundary(Vector3(0.f, 0.f, 0.f))
 , minBoundary(Vector3(0.f, 0.f, 0.f))
 , m_pTerrain(NULL)
+, prevPosition(Vector3(0.f, 0.f, 0.f))
 {
+	SetShouldRender(false);
 }
 
 
@@ -38,17 +43,37 @@ void CEnemy::Init()
 	minBoundary.Set(1, 1, 1);
 
 	// Set Speed
-	m_dSpeed = 1.0;
+	m_dSpeed = 5.0;
 
 	// Initialize the LOD meshes
 	InitLOD("Chair", "sphere", "cubeSG");
 
 	// Initialize the Collider
 	this->SetCollider(true);
-	this->SetAABB(Vector3(1,1,1), Vector3(-1, -1, -1));
+	this->SetAABB(Vector3(1, 1, 1), Vector3(-1, -1, -1));
+	this->SetScale(Vector3(3, 3, 3));
+
+	GenericEntity* BodyEntity = Create::Asset("RobotBody", Vector3(0.0f, 0.0f, 0.0f));
+	BodyNode = CSceneGraph::GetInstance()->AddNode(BodyEntity);
+
+	GenericEntity* HeadEntity = Create::Asset("RobotHead", Vector3(0.0f, 0.0f, 0.0f));
+	HeadNode = BodyNode->AddChild(HeadEntity);
+	HeadOffset = Vector3(0.0f, 0.7f, 0.0f);
+	//HeadNode->ApplyTranslate(0.f, 0.7f, 0.f);
+
+	GenericEntity* RHandEntity = Create::Asset("RobotHand", Vector3(0.0f, 0.0f, 0.0f));
+	RHandNode = BodyNode->AddChild(RHandEntity);
+	RHandOffset = Vector3(-0.6f, 0.0f, 0.0f);
+	//RHandNode->ApplyTranslate(-0.6, 0.f, 0.f);
+
+	GenericEntity* LHandEntity = Create::Asset("RobotHand", Vector3(0.0f, 0.0f, 0.0f));
+	LHandNode = BodyNode->AddChild(LHandEntity);
+	LHandOffset = Vector3(0.6f, 0.0f, 0.0f);
+	//LHandNode->ApplyTranslate(0.6, 0.f, 0.f);
 
 	// Add the EntityManager
-	EntityManager::GetInstance()->AddEntity(this, true);}
+	EntityManager::GetInstance()->AddEntity(this, true);
+}
 
 // Reset this player instance to default
 void CEnemy::Reset()
@@ -118,14 +143,52 @@ GroundEntity* CEnemy::GetTerrain()
 	return m_pTerrain;
 }
 
+void CEnemy::UpdateMatrices()
+{
+	Vector3 MainDirection = (target - position).Normalized();
+	Vector3 right = MainDirection.Cross(up);
+	right.y = 0;
+	right.Normalize();
+
+	float MainAngle = Math::RadianToDegree(atan2(0, 1) - atan2(MainDirection.z, MainDirection.x)) + 90;
+	BodyNode->Reset();
+	BodyNode->SetScale(scale.x, scale.y, scale.z);
+	BodyNode->ApplyTranslate(position.x / scale.x, position.y / scale.y, position.z / scale.z);
+	BodyNode->ApplyRotate(MainAngle, 0, 1, 0);
+	
+	Vector3 direction = (CPlayerInfo::GetInstance()->GetPos() - (position + (right * LHandOffset.Length() * scale.x) )).Normalized();
+	if (direction.Dot(MainDirection) > 0)
+		direction = (CPlayerInfo::GetInstance()->GetPos() - (position - (right * RHandOffset.Length() * scale.x))).Normalized();
+	float angle = Math::RadianToDegree(atan2(0, 1) - atan2(direction.z, direction.x)) + 90;
+	LHandNode->Reset();
+	//if (direction.Dot(MainDirection) > 0)
+	//	angle + 180;
+	LHandNode->ApplyRotate(angle, 0, 1, 0);
+	LHandNode->ApplyTranslate(Vector3ToTripleFloat(LHandOffset));
+
+	direction = (CPlayerInfo::GetInstance()->GetPos() - (position - (right * RHandOffset.Length() * scale.x))).Normalized();
+	if (direction.Dot(MainDirection) > 0)
+		direction = (CPlayerInfo::GetInstance()->GetPos() - (position + (right * RHandOffset.Length() * scale.x))).Normalized();
+	angle = Math::RadianToDegree(atan2(0, 1) - atan2(direction.z, direction.x)) + 90;
+	RHandNode->Reset();
+	RHandNode->ApplyRotate(angle, 0, 1, 0);
+	RHandNode->ApplyTranslate(Vector3ToTripleFloat(RHandOffset));
+
+	HeadNode->Reset();
+	HeadNode->ApplyTranslate(Vector3ToTripleFloat(HeadOffset));
+
+	cout << BodyNode->GetWorldPosition() << " " << LHandNode->GetWorldPosition() << endl;
+	//target = CPlayerInfo::GetInstance()->GetPos();
+}
+
 // Update
 void CEnemy::Update(double dt)
 {
-	Vector3 viewVector = (target - position).Normalized();
-	position += viewVector * (float)m_dSpeed * (float)dt;
-
+	prevPosition = position;
+	Vector3 direction = (target - position);
+	if (direction.Length() > 10)
+	position += direction.Normalized() * (float)m_dSpeed * (float)dt;
 	Constrain();
-
 	// Update the target
 	if (position.z > 400.f)
 	{
@@ -154,19 +217,22 @@ void CEnemy::Constrain()
 	{
 		position.y = m_pTerrain->GetTerrainHeight(position);
 	}
+	UpdateMatrices();
 }
 
 void CEnemy::Render()
 {
-	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	cout << "This should not be called" << endl;
+	//MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(position.x, position.y, position.z);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-	if (GetLODStatus() == true)
-	{
-		if (theDetailLevel != NO_DETAILS)
-			RenderHelper::RenderMesh(GetLODMesh());
-	}
-	modelStack.PopMatrix();
+	//modelStack.PushMatrix();
+	//modelStack.Translate(position.x, position.y, position.z);
+	//modelStack.Scale(scale.x, scale.y, scale.z);
+	//if (GetLODStatus() == true)
+	//{
+	//	//if (theDetailLevel != NO_DETAILS)
+	//	//	RenderHelper::RenderMesh(GetLODMesh());
+	//	//BodyNode->Render();
+	//}
+	//modelStack.PopMatrix();
 }
