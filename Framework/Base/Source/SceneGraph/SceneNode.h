@@ -49,7 +49,7 @@ public:
 	CSceneNode* GetEntity(const int ID);
 	// Return the number of children in this group
 	int GetNumOfChild(void);
-
+	vector<CSceneNode*> GetChildren();
 	// Update the Scene Graph
 	void Update(void);
 	// Render the Scene Graph
@@ -63,6 +63,7 @@ protected:
 	int			ID;
 	EntityBase* theEntity;
 	CSceneNode* theParent;
-
 	vector<CSceneNode*> theChildren;
+public:
+	Vector3 offset;
 };

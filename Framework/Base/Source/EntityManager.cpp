@@ -4,7 +4,8 @@
 #include "Projectile/Laser.h"
 #include "Projectile/HitScan.h"
 #include "SceneGraph\SceneGraph.h"
-
+#include "Enemy\Enemy.h"
+#include "PlayerInfo\PlayerInfo.h"
 #include <iostream>
 using namespace std;
 
@@ -364,20 +365,51 @@ bool EntityManager::CheckForCollision(void)
 												thatMinAABB, thatMaxAABB,
 												hitPosition) == true)
 					{
+						bool collidedWithBodyPart = false;
+						if (thatCollider->isEnemy())
+						{
+							CEnemy* theEnemy = dynamic_cast<CEnemy*>(thatCollider);
+
+							for (int i = 0; i < theEnemy->BodyNode->GetNumOfChild(); i++)
+							{
+								if (theEnemy->BodyNode->GetChildren()[i] == theEnemy->RHandNode || theEnemy->BodyNode->GetChildren()[i] == theEnemy->LHandNode)
+									continue;
+
+								GenericEntity *ChildCollider = dynamic_cast<GenericEntity*>(theEnemy->BodyNode->GetChildren()[i]->GetEntity());
+								Vector3 ChildMin = ChildCollider->GetMinAABB() * theEnemy->GetScale().x + theEnemy->GetPosition() + theEnemy->BodyNode->GetChildren()[i]->offset* theEnemy->GetScale().x;
+								Vector3 ChildMax = ChildCollider->GetMaxAABB() * theEnemy->GetScale().x + theEnemy->GetPosition() + theEnemy->BodyNode->GetChildren()[i]->offset* theEnemy->GetScale().x;
+								if (CheckLineSegmentPlane(
+									thisEntity->GetPosition(),
+									thisEntity->GetPosition() + thisEntity->GetDirection() * thisEntity->GetLength(),
+									ChildMin, ChildMax,
+									hitPosition) == true)
+								{
+									CPlayerInfo::GetInstance()->SetHitmarker("CRIT");
+									collidedWithBodyPart = true;
+									break;
+								}
+							}
+							if (!collidedWithBodyPart)
+							{
+								CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT");
+							}
+						}
+
 						(*colliderThis)->SetIsDone(true);
-						(*colliderThat)->SetIsDone(true);
+						//(*colliderThat)->SetIsDone(true);
 
+						//for (int i = 0; i < )
 
-						// Remove from Scene Graph
-						if (CSceneGraph::GetInstance()->DeleteNode((*colliderThis)) == true)
-						{
-							cout << "*** This Entity removed ***" << endl;
-						}
-						// Remove from Scene Graph
-						if (CSceneGraph::GetInstance()->DeleteNode((*colliderThat)) == true)
-						{
-							cout << "*** That Entity removed ***" << endl;
-						}
+						//// Remove from Scene Graph
+						//if (CSceneGraph::GetInstance()->DeleteNode((*colliderThis)) == true)
+						//{
+						//	cout << "*** This Entity removed ***" << endl;
+						//}
+						//// Remove from Scene Graph
+						//if (CSceneGraph::GetInstance()->DeleteNode((*colliderThat)) == true)
+						//{
+						//	cout << "*** That Entity removed ***" << endl;
+						//}
 
 					}
 				}

@@ -7,6 +7,7 @@
 GenericEntity::GenericEntity(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
 {
+	SetIsEnemy(false);
 }
 
 GenericEntity::~GenericEntity()
@@ -32,6 +33,16 @@ void GenericEntity::Render()
 	else
 		RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
+}
+
+bool GenericEntity::isEnemy()
+{
+	return b_isEnemy;
+}
+
+void GenericEntity::SetIsEnemy(bool setEnemy)
+{
+	b_isEnemy = setEnemy;
 }
 
 //// Set the maxAABB and minAABB

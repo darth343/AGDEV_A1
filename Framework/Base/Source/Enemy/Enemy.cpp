@@ -52,23 +52,30 @@ void CEnemy::Init()
 	this->SetCollider(true);
 	this->SetAABB(Vector3(1, 1, 1), Vector3(-1, -1, -1));
 	this->SetScale(Vector3(3, 3, 3));
-
+	this->SetIsEnemy(true);
 	GenericEntity* BodyEntity = Create::Asset("RobotBody", Vector3(0.0f, 0.0f, 0.0f));
 	BodyNode = CSceneGraph::GetInstance()->AddNode(BodyEntity);
+	BodyEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotBody")->Max, MeshBuilder::GetInstance()->GetMesh("RobotBody")->Min);
 
 	GenericEntity* HeadEntity = Create::Asset("RobotHead", Vector3(0.0f, 0.0f, 0.0f));
 	HeadNode = BodyNode->AddChild(HeadEntity);
 	HeadOffset = Vector3(0.0f, 0.7f, 0.0f);
+	HeadEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHead")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHead")->Min);
+	HeadNode->offset = HeadOffset;
 	//HeadNode->ApplyTranslate(0.f, 0.7f, 0.f);
 
 	GenericEntity* RHandEntity = Create::Asset("RobotHand", Vector3(0.0f, 0.0f, 0.0f));
 	RHandNode = BodyNode->AddChild(RHandEntity);
 	RHandOffset = Vector3(-0.6f, 0.0f, 0.0f);
+	RHandEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHand")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHand")->Min);
+	RHandNode->offset = RHandOffset;
 	//RHandNode->ApplyTranslate(-0.6, 0.f, 0.f);
 
 	GenericEntity* LHandEntity = Create::Asset("RobotHand", Vector3(0.0f, 0.0f, 0.0f));
 	LHandNode = BodyNode->AddChild(LHandEntity);
 	LHandOffset = Vector3(0.6f, 0.0f, 0.0f);
+	LHandEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHand")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHand")->Min);
+	LHandNode->offset = LHandOffset;
 	//LHandNode->ApplyTranslate(0.6, 0.f, 0.f);
 
 	// Add the EntityManager
@@ -176,8 +183,6 @@ void CEnemy::UpdateMatrices()
 
 	HeadNode->Reset();
 	HeadNode->ApplyTranslate(Vector3ToTripleFloat(HeadOffset));
-
-	cout << BodyNode->GetWorldPosition() << " " << LHandNode->GetWorldPosition() << endl;
 	//target = CPlayerInfo::GetInstance()->GetPos();
 }
 
@@ -186,8 +191,8 @@ void CEnemy::Update(double dt)
 {
 	prevPosition = position;
 	Vector3 direction = (target - position);
-	if (direction.Length() > 10)
-	position += direction.Normalized() * (float)m_dSpeed * (float)dt;
+	//if (direction.Length() > 10)
+	//position += direction.Normalized() * (float)m_dSpeed * (float)dt;
 	Constrain();
 	// Update the target
 	if (position.z > 400.f)

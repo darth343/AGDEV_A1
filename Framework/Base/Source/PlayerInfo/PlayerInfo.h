@@ -6,6 +6,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
+#include <string>
 
 class CPlayerInfo
 {
@@ -14,6 +15,13 @@ protected:
 	CPlayerInfo(void);
 
 public:
+	enum HITMARKER_TYPE
+	{
+		KILL,
+		CRIT,
+		NON_CRIT,
+		NONE,
+	};
 	static CPlayerInfo *GetInstance()
 	{
 		if (!s_instance)
@@ -94,6 +102,11 @@ public:
 	// Check collision with walls
 	void CheckWallCollision(Vector3 &nextPos);
 
+	// Set Hitmarker
+	void SetHitmarker(std::string hm_type);
+	
+	void UpdateHitmarker(double dt);
+
 	// Constrain the position within the borders
 	void Constrain(void);
 
@@ -103,7 +116,8 @@ public:
 	void UpdateCamera(double dt);
 
 	// Render
-	void Render(const std::string& _meshName);
+	void Render();
+	void RenderUI();
 
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
@@ -128,4 +142,9 @@ private:
 	CWeaponInfo* primaryWeapon;
 	CWeaponInfo* secondaryWeapon;
 
+	//hitmarker stuff
+	float HitmarkerCurrentTime;
+	float HitmarkerWaitTime;
+	float HitmarkerScale;
+	HITMARKER_TYPE hitmarker_type;
 };

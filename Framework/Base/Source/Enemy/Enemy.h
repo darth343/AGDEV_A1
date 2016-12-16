@@ -19,17 +19,6 @@ protected:
 	double m_dSpeed;
 	double m_dAcceleration;
 
-	CSceneNode* BodyNode;
-	Vector3 RHandOffset;
-	CSceneNode* RHandNode;
-	Vector3 LHandOffset;
-	CSceneNode* LHandNode;
-	Vector3 HeadOffset;
-	CSceneNode* HeadNode;
-	
-	GenericEntity* HeadEntity;
-	GenericEntity* LHandEntity;
-	GenericEntity* RHandEntity;
 public:
 	CEnemy();
 	virtual ~CEnemy();
@@ -65,5 +54,17 @@ public:
 
 	// Render
 	void Render();
+
+	CSceneNode* BodyNode;
+	Vector3 RHandOffset;
+	CSceneNode* RHandNode;
+	Vector3 LHandOffset;
+	CSceneNode* LHandNode;
+	Vector3 HeadOffset;
+	CSceneNode* HeadNode;
+
+	GenericEntity* HeadEntity;
+	GenericEntity* LHandEntity;
+	GenericEntity* RHandEntity;
 };
 

@@ -16,13 +16,17 @@ public:
 
 	virtual void Update(double _dt);
 	virtual void Render();
-
+	bool isEnemy();
+	void SetIsEnemy(bool isEnemy);
 	// Set the maxAABB and minAABB
 	//void SetAABB(Vector3 maxAABB, Vector3 minAABB);
 	Vector3 GetMin();
 	Vector3 GetMax();
+
+	Mesh* getModelMesh() { return modelMesh; }
 private:
 	Mesh* modelMesh;
+	bool b_isEnemy;
 };
 
 namespace Create

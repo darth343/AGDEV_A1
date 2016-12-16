@@ -1,6 +1,7 @@
 #include "PlayerInfo.h"
 #include <iostream>
 
+#include "../Application.h"
 #include "MouseController.h"
 #include "KeyboardController.h"
 #include "Mtx44.h"
@@ -29,6 +30,10 @@ CPlayerInfo::CPlayerInfo(void)
 	, m_pTerrain(NULL)
 	, primaryWeapon(NULL)
 	, secondaryWeapon(NULL)
+	, hitmarker_type(NONE)
+	, HitmarkerScale(100)
+	, HitmarkerWaitTime(0.15f)
+	, HitmarkerCurrentTime(0.f)
 {
 }
 
@@ -110,6 +115,24 @@ void CPlayerInfo::SetOnFreeFall(bool isOnFreeFall)
 		m_bFallDownwards = true;
 		m_dFallSpeed = 0.0;
 	}
+}
+
+void CPlayerInfo::SetHitmarker(string hm_type)
+{
+	if (hm_type == "CRIT")
+	{
+		hitmarker_type = CRIT;
+	}
+	else if (hm_type == "NON_CRIT")
+	{
+		hitmarker_type = NON_CRIT;
+	}
+	else if (hm_type == "KILL")
+	{
+		hitmarker_type = KILL;
+	}
+	HitmarkerCurrentTime = 0.f;
+	HitmarkerScale = 200.f;
 }
 
 // Set the player to jumping upwards
@@ -457,13 +480,34 @@ void CPlayerInfo::UpdateCamera(double dt)
 	}
 }
 
+void CPlayerInfo::UpdateHitmarker(double dt)
+{
+	if (HitmarkerCurrentTime > HitmarkerWaitTime)
+	{
+		hitmarker_type = NONE;
+		HitmarkerScale = 100.f;
+	}
+	else
+	{
+		HitmarkerCurrentTime += dt;
+		if (hitmarker_type != NONE)
+		{
+			HitmarkerScale += dt * 1600;
+			if (HitmarkerScale > 400)
+			{
+				HitmarkerScale = 400.f;
+			}
+		}
+	}
+}
+
 /********************************************************************************
  Hero Update
  ********************************************************************************/
 void CPlayerInfo::Update(double dt)
 {
 	UpdateCamera(dt);
-
+	UpdateHitmarker(dt);
 	//CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
 	// Update the weapons
 	if (KeyboardController::GetInstance()->IsKeyReleased('R'))
@@ -517,7 +561,7 @@ void CPlayerInfo::Update(double dt)
 	}
 }
 
-void CPlayerInfo::Render(const std::string& _meshName)
+void CPlayerInfo::Render()
 {
 	Vector3 view = (target - position).Normalized();
 
@@ -530,7 +574,39 @@ void CPlayerInfo::Render(const std::string& _meshName)
 	modelStack.Rotate(90.f - Math::RadianToDegree(acos(view.Dot(Vector3(0, 1, 0)))), 0, 0, 1);
 	modelStack.Translate(1.6f, -0.6f, 0.6f);
 
-	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh(_meshName));
+	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("gun"));
+	modelStack.PopMatrix();
+}
+
+void CPlayerInfo::RenderUI()
+{
+	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
+	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
+
+	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+
+	modelStack.Translate(0, 0, 0);
+	switch (hitmarker_type)
+	{
+	case KILL:
+		modelStack.Scale(HitmarkerScale, HitmarkerScale, HitmarkerScale);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("KILL_HITMARKER"));
+		break;
+	case CRIT:
+		modelStack.Scale(HitmarkerScale, HitmarkerScale, HitmarkerScale);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("CRIT_HITMARKER"));
+		break;
+	case NON_CRIT:
+		modelStack.Scale(HitmarkerScale, HitmarkerScale, HitmarkerScale);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("NONCRIT_HITMARKER"));
+		break;
+	case NONE:
+		modelStack.Scale(50, 50, 50);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("crosshair"));
+		break;
+	}
 	modelStack.PopMatrix();
 }
 

@@ -127,6 +127,14 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
 	MeshBuilder::GetInstance()->GenerateQuad("quad", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
+
+	MeshBuilder::GetInstance()->GenerateQuad("CRIT_HITMARKER", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("CRIT_HITMARKER")->textureID = LoadTGA("Image//Hitmarker_CRIT.tga");
+
+	MeshBuilder::GetInstance()->GenerateQuad("NONCRIT_HITMARKER", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("NONCRIT_HITMARKER")->textureID = LoadTGA("Image//Hitmarker_NONCRIT.tga");
+	MeshBuilder::GetInstance()->GenerateQuad("KILL_HITMARKER", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("KILL_HITMARKER")->textureID = LoadTGA("Image//Hitmarker_KILL.tga");
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
 	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
@@ -267,7 +275,7 @@ void SceneText::Init()
 	
 	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
 	//Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));
-	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
+	//Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
 
 	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
 											 "SKYBOX_LEFT", "SKYBOX_RIGHT",
@@ -322,6 +330,8 @@ void SceneText::Init()
 		Vector3(0, -11, -2.9),
 		Vector3(2.2, 1, 2.5)
 		);
+	ground1->SetCollider(false);
+
 	//ground1->SetScale(Vector3(2.2, 1, 2.5));
 	//ground1->SetPosition(Vector3(0, -11, -2.9));
 	//ground1->InitLOD("ground1", "ground1", "ground1");
@@ -392,7 +402,7 @@ void SceneText::Update(double dt)
 		z -= (float)(100.f * dt);
 	if (KeyboardController::GetInstance()->IsKeyDown('H'))
 		z += (float)(100.f * dt);
-	//theWall->SetPos(Vector3(x, 0, z));
+	theWall->SetPos(Vector3(x, 0, z));
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 
@@ -424,7 +434,7 @@ void SceneText::Render()
 	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 	EntityManager::GetInstance()->Render();
-	playerInfo->Render("gun");
+	playerInfo->Render();
 
 	// Setup 2D pipeline then render 2D
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
@@ -432,6 +442,7 @@ void SceneText::Render()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
+	playerInfo->RenderUI();
 }
 
 void SceneText::Exit()
