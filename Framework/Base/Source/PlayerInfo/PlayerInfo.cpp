@@ -57,12 +57,12 @@ CPlayerInfo::~CPlayerInfo(void)
 void CPlayerInfo::Init(void)
 {
 	// Set the default values
-	defaultPosition.Set(-200 ,0,-50);
+	defaultPosition.Set(0 ,0, -58);
 	defaultTarget.Set(0,0,0);
 	defaultUp.Set(0,1,0);
 
 	// Set the current values
-	position.Set(-200, 0, -50);
+	position.Set(0, 0, -58);
 	target.Set(0, 0, 0);
 	up.Set(0, 1, 0);
 

@@ -21,6 +21,7 @@ public:
 	void RemoveScene(const std::string& _name);
 	void SetActiveScene(const std::string& _name);
 	bool CheckSceneExist(const std::string& _name);
+	Scene* getActiveScene(){ return activeScene; }
 
 private:
 	SceneManager();

@@ -52,6 +52,8 @@ public:
 	// Constrain the position within the borders
 	void Constrain();
 
+	void Explode();
+
 	// Render
 	void Render();
 

@@ -9,7 +9,7 @@
 #include "MyMath.h"
 #include "../SpatialPartition/SpatialPartition.h"
 #include "../SceneGraph/SceneGraph.h"
-
+#include "../Enemy/Enemy.h"
 #include <iostream>
 using namespace std;
 
@@ -36,6 +36,36 @@ CGrenade::~CGrenade(void)
 	theSource = NULL;
 }
 
+
+void CGrenade::Detonate()
+{
+	SetStatus(false);
+	SetIsDone(true);	// This method informs EntityManager to remove this instance
+	// Check the SpatialPartition to destroy nearby objects
+	vector<EntityBase*> ExportList = CSpatialPartition::GetInstance()->GetObjects(position);
+	for (int i = 0; i < ExportList.size(); ++i)
+	{
+		// Remove from Scene Graph
+		GenericEntity* entity = dynamic_cast<GenericEntity*>(ExportList[i]);
+		if (entity->isEnemy())
+		{
+			CEnemy* entity = dynamic_cast<CEnemy*>(ExportList[i]);
+			entity->SetIsDone(true);
+			entity->BodyNode->GetEntity()->SetIsDone(true);
+		}
+		else
+		{
+			if (!ExportList[i]->HasCollider())
+				continue;
+			ExportList[i]->SetIsDone(true);
+			if (CSceneGraph::GetInstance()->DeleteNode(ExportList[i]) == true)
+			{
+				cout << "*** This Entity removed ***" << endl;
+			}
+		}
+	}
+}
+
 // Update the status of this projectile
 void CGrenade::Update(double dt)
 {
@@ -46,20 +76,7 @@ void CGrenade::Update(double dt)
 	m_fLifetime -= (float)dt;
 	if (m_fLifetime < 0.0f)
 	{
-		SetStatus(false);
-		SetIsDone(true);	// This method informs EntityManager to remove this instance
-		cout << "Deleted grnade" << endl;
-		// Check the SpatialPartition to destroy nearby objects
-		vector<EntityBase*> ExportList = CSpatialPartition::GetInstance()->GetObjects(position);
-		for (int i = 0; i < ExportList.size(); ++i)
-		{
-			// Remove from Scene Graph
-			ExportList[i]->SetIsDone(true);
-			if (CSceneGraph::GetInstance()->DeleteNode(ExportList[i]) == true)
-			{
-				cout << "*** This Entity removed ***" << endl;
-			}
-		}
+		Detonate();
 		return;
 	}
 
@@ -75,8 +92,7 @@ void CGrenade::Update(double dt)
 
 		if (position.y < m_pTerrain->GetTerrainHeight(position) - 10.0f)
 		{
-			position.y = m_pTerrain->GetTerrainHeight(position) - 10.0f;
-			m_fSpeed = 0.0f;
+			Detonate();
 			return;
 		}
 	}

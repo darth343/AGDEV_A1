@@ -25,6 +25,8 @@ public:
 
 	// Set the terrain for the player info
 	void SetTerrain(GroundEntity* m_pTerrain);
+
+	void Detonate();
 };
 
 namespace Create

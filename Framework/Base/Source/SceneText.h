@@ -38,7 +38,7 @@ public:
 	virtual void Exit();
 
 	void SpawnEnemies(double dt);
-
+	float DoorHealth;
 private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
@@ -46,7 +46,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-	TextEntity* textObj[3];
+	TextEntity* textObj[4];
 	Light* lights[2];
 	EnemySpawner Spawner[3];
 	GenericEntity* theCube;

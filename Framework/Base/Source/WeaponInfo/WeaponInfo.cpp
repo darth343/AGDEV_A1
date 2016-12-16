@@ -1,6 +1,7 @@
 #include "WeaponInfo.h"
 #include "../Projectile/Projectile.h"
 #include "../Projectile/HitScan.h"
+#include "../PlayerInfo/playerInfo.h"
 #include <iostream>
 using namespace std;
 
@@ -137,7 +138,7 @@ void CWeaponInfo::Update(const double dt)
 }
 
 // Discharge this weapon
-void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _source)
+void CWeaponInfo::Discharge(Vector3 position, Vector3 _target, CPlayerInfo* _source)
 {
 	if (bFire)
 	{
@@ -156,7 +157,7 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _sour
 			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 			CHitScan* aHitScan = Create::HitScan("cube",
 				position,
-				(target - position).Normalized());
+				(_target - position).Normalized());
 			aHitScan->SetIsLaser(true);
 			aHitScan->SetCollider(false);
 			bFire = false;

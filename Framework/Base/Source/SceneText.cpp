@@ -141,14 +141,34 @@ void SceneText::Init()
 	//MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
 	//MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
 
-	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead", "OBJ//robotHead.obj");
-	MeshBuilder::GetInstance()->GetMesh("RobotHead")->textureID = LoadTGA("Image//robotHead.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead_high", "OBJ//robotHead_high.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHead_high")->textureID = LoadTGA("Image//robotHead.tga");
 
-	MeshBuilder::GetInstance()->GenerateOBJ("RobotBody", "OBJ//robotBody.obj");
-	MeshBuilder::GetInstance()->GetMesh("RobotBody")->textureID = LoadTGA("Image//robotBody.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotBody_high", "OBJ//robotBody_high.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotBody_high")->textureID = LoadTGA("Image//robotBody.tga");
 
-	MeshBuilder::GetInstance()->GenerateOBJ("RobotHand", "OBJ//robotHand.obj");
-	MeshBuilder::GetInstance()->GetMesh("RobotHand")->textureID = LoadTGA("Image//robotHand.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHand_high", "OBJ//robotHand_high.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHand_high")->textureID = LoadTGA("Image//robotHand.tga");
+
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead_med", "OBJ//robotHead_med.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHead_high")->textureID = LoadTGA("Image//robotHead.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotBody_med", "OBJ//robotBody_med.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotBody_med")->textureID = LoadTGA("Image//robotBody.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHand_med", "OBJ//robotHand_med.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHand_med")->textureID = LoadTGA("Image//robotHand.tga");
+
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHead_low", "OBJ//robotHead.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHead_low")->textureID = LoadTGA("Image//robotHead.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotBody_low", "OBJ//robotBody.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotBody_low")->textureID = LoadTGA("Image//robotBody.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("RobotHand_low", "OBJ//robotHand.obj");
+	MeshBuilder::GetInstance()->GetMesh("RobotHand_low")->textureID = LoadTGA("Image//robotHand.tga");
 
 	// Gun
 	MeshBuilder::GetInstance()->GenerateOBJ("gun", "OBJ//gun.obj");
@@ -292,14 +312,14 @@ void SceneText::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
 
-	CEnemy* theEnemy = new CEnemy();
-	theEnemy->Init();
-	theEnemy->SetTerrain(groundEntity);
+	//CEnemy* theEnemy = new CEnemy();
+	//theEnemy->Init();
+	//theEnemy->SetTerrain(groundEntity);
 
 
 	//theWall = Create::Wall("cube", "cubeSG", "sphere",
@@ -352,6 +372,7 @@ void SceneText::Init()
 	Spawner[2].Init();
 	Spawner[2].Position.Set(23, 0, 277);
 	Spawner[2].currentTime = Math::RandFloatMinMax(-2, 2);
+	DoorHealth = 2000;
 }
 
 void SceneText::SpawnEnemies(double dt)
@@ -367,6 +388,7 @@ void SceneText::SpawnEnemies(double dt)
 			theEnemy->SetTerrain(groundEntity);
 			theEnemy->SetPosition(Spawner[i].Position);
 			theEnemy->SetTarget(Vector3(0, 0, -67));
+			Spawner[i].waitTime = Math::RandFloatMinMax(Spawner[i].waitTime - 2, Spawner[i].waitTime + 2);
 		}
 	}
 }
@@ -460,6 +482,11 @@ void SceneText::Update(double dt)
 	ss1.precision(4);
 	ss1 << "Player HP:" << CPlayerInfo::GetInstance()->getHealth();
 	textObj[2]->SetText(ss1.str());
+
+	ss1.str("");
+	ss1.precision(4);
+	ss1 << "Door HP:" << DoorHealth << " / 2000";
+	textObj[3]->SetText(ss1.str());
 }
 
 void SceneText::Render()

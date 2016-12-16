@@ -3,7 +3,8 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "../PlayerInfo/PlayerInfo.h"
-
+#include "../../Common/Source/SceneManager.h"
+#include "../SceneText.h"
 #define Vector3ToTripleFloat(var)var.x, var.y, var.z
 
 CEnemy::CEnemy()
@@ -54,28 +55,32 @@ void CEnemy::Init()
 	this->SetScale(Vector3(3, 3, 3));
 	this->SetIsEnemy(true);
 	health = 150;
-	GenericEntity* BodyEntity = Create::Asset("RobotBody", Vector3(0.0f, 0.0f, 0.0f));
+	GenericEntity* BodyEntity = Create::Asset("RobotBody_high", Vector3(0.0f, 0.0f, 0.0f));
 	BodyNode = CSceneGraph::GetInstance()->AddNode(BodyEntity);
-	BodyEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotBody")->Max, MeshBuilder::GetInstance()->GetMesh("RobotBody")->Min);
+	BodyEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotBody_low")->Max, MeshBuilder::GetInstance()->GetMesh("RobotBody_low")->Min);
+	BodyEntity->InitLOD("RobotBody_high", "RobotBody_med", "RobotBody_low");
 
-	GenericEntity* HeadEntity = Create::Asset("RobotHead", Vector3(0.0f, 0.0f, 0.0f));
+	GenericEntity* HeadEntity = Create::Asset("RobotHead_high", Vector3(0.0f, 0.0f, 0.0f));
 	HeadNode = BodyNode->AddChild(HeadEntity);
 	HeadOffset = Vector3(0.0f, 0.7f, 0.0f);
-	HeadEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHead")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHead")->Min);
+	HeadEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHead_low")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHead_low")->Min);
+	HeadEntity->InitLOD("RobotHead_high", "RobotHead_med", "RobotHead_low");
 	HeadNode->offset = HeadOffset;
 	//HeadNode->ApplyTranslate(0.f, 0.7f, 0.f);
 
-	GenericEntity* RHandEntity = Create::Asset("RobotHand", Vector3(0.0f, 0.0f, 0.0f));
+	GenericEntity* RHandEntity = Create::Asset("RobotHand_high", Vector3(0.0f, 0.0f, 0.0f));
 	RHandNode = BodyNode->AddChild(RHandEntity);
 	RHandOffset = Vector3(-0.6f, 0.0f, 0.0f);
-	RHandEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHand")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHand")->Min);
+	RHandEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHand_low")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHand_low")->Min);
+	RHandEntity->InitLOD("RobotHand_high", "RobotHand_med", "RobotHand_low");
 	RHandNode->offset = RHandOffset;
 	//RHandNode->ApplyTranslate(-0.6, 0.f, 0.f);
 
-	GenericEntity* LHandEntity = Create::Asset("RobotHand", Vector3(0.0f, 0.0f, 0.0f));
+	GenericEntity* LHandEntity = Create::Asset("RobotHand_high", Vector3(0.0f, 0.0f, 0.0f));
 	LHandNode = BodyNode->AddChild(LHandEntity);
 	LHandOffset = Vector3(0.6f, 0.0f, 0.0f);
-	LHandEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHand")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHand")->Min);
+	LHandEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotHand_low")->Max, MeshBuilder::GetInstance()->GetMesh("RobotHand_low")->Min);
+	LHandEntity->InitLOD("RobotHand_high", "RobotHand_med", "RobotHand_low");
 	LHandNode->offset = LHandOffset;
 	//LHandNode->ApplyTranslate(0.6, 0.f, 0.f);
 
@@ -151,6 +156,14 @@ GroundEntity* CEnemy::GetTerrain()
 	return m_pTerrain;
 }
 
+void CEnemy::Explode()
+{
+	SceneText* scene = dynamic_cast<SceneText*>(SceneManager::GetInstance()->getActiveScene());
+	scene->DoorHealth -= 200;
+	this->SetIsDone(true);
+	this->BodyNode->GetEntity()->SetIsDone(true);
+}
+
 void CEnemy::UpdateMatrices()
 {
 	Vector3 MainDirection = (target - position).Normalized();
@@ -193,7 +206,9 @@ void CEnemy::Update(double dt)
 	prevPosition = position;
 	Vector3 direction = (target - position);
 	if (((position + direction.Normalized() * (float)m_dSpeed * (float)dt) - target).Length() > 5)
-	position += direction.Normalized() * (float)m_dSpeed * (float)dt;
+		position += direction.Normalized() * (float)m_dSpeed * (float)dt;
+	else
+		Explode();
 	Constrain();
 	// Update the target
 	if (position.z > 400.f)
@@ -219,9 +234,9 @@ void CEnemy::Constrain()
 
 	// if the y position is not equal to terrain height at that position
 	// then update y position to the terrain height
-	if (position.y != m_pTerrain->GetTerrainHeight(position))
+	if (position.y - 2 != m_pTerrain->GetTerrainHeight(position))
 	{
-		position.y = m_pTerrain->GetTerrainHeight(position);
+		position.y = m_pTerrain->GetTerrainHeight(position) - 2;
 	}
 	UpdateMatrices();
 }

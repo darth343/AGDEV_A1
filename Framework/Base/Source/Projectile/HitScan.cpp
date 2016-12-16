@@ -95,8 +95,14 @@ void CHitScan::Render(void)
 	// Reset the model stack
 	modelStack.LoadIdentity();
 	// We introduce a small offset to y position so that we can see the laser beam.
-	modelStack.Translate(position.x, position.y - 0.001f, position.z);
+	Vector3 finalPos = position;
+
+	if (!HitPosition.IsZero())
+	finalPos = (position + HitPosition) * 0.5;
+	modelStack.Translate(finalPos.x, finalPos.y - 0.001f, finalPos.z);
 	//modelStack.Scale(scale.x, scale.y, scale.z);
+
+
 	modelStack.PushMatrix();
 	modelStack.Rotate(180 / Math::PI * angle_z, 0.0f, 1.0f, 0.0f);
 	modelStack.PushMatrix();
@@ -104,8 +110,10 @@ void CHitScan::Render(void)
 	modelStack.PushMatrix();
 	modelStack.Rotate(180 / Math::PI * angle_y, 1.0f, 0.0f, 0.0f);
 	glLineWidth(5.0f);
-	RenderHelper::RenderMesh(modelMesh);
+	modelStack.PushMatrix();
+	//RenderHelper::RenderMesh(modelMesh);
 	glLineWidth(1.0f);
+	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
@@ -126,6 +134,7 @@ CHitScan* Create::HitScan(const std::string& _meshName,
 
 	CHitScan* result = new CHitScan(modelMesh);
 	result->Set(_position, _direction, m_fLifetime, 1.f);
+	result->SetHitPosition(Vector3(0,0,0));
 	result->SetLength(m_fLength);
 	result->SetStatus(true);
 	result->SetCollider(true);
