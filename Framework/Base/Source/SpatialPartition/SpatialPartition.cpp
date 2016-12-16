@@ -31,6 +31,7 @@ CSpatialPartition::CSpatialPartition(void)
 	, yOffset(0.0f)
 	, _meshName("")
 	, theCamera(NULL)
+	, ShouldRender(false)
 {
 }
 

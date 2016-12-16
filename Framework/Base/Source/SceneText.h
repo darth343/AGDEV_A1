@@ -46,7 +46,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-	TextEntity* textObj[4];
+	TextEntity* textObj[3];
 	Light* lights[2];
 	EnemySpawner Spawner[3];
 	GenericEntity* theCube;

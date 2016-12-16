@@ -164,15 +164,7 @@ void CGrid::Render(void)
 		}
 		else
 		{
-			bool objecthere = false;
-			for (int i = 0; i < ListOfObjects.size(); ++i)
-			{
-				if (ListOfObjects[i]->HasCollider())
-				{
-					objecthere = true;
-				}
-			}
-			if (objecthere)
+			if (ListOfObjects.size() > 0)
 			{
 				RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("GRIDMESH_WHITE"));
 			}

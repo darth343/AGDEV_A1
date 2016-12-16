@@ -51,7 +51,7 @@ public:
 	bool Init(	const int xGridSize, const int zGridSize, 
 				const int xNumOfGrid, const int zNumOfGrid, 
 				const float yOffset = -9.9f);
-
+	bool ShouldRender;
 	// Set a particular grid's Mesh
 	void SetMesh(const std::string& _meshName);
 

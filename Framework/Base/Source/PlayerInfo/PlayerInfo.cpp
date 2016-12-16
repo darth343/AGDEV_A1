@@ -513,7 +513,6 @@ void CPlayerInfo::UpdateHitmarker(double dt)
  ********************************************************************************/
 void CPlayerInfo::Update(double dt)
 {
-	cout << "Pos: " << position << endl;
 	UpdateCamera(dt);
 	UpdateHitmarker(dt);
 	//CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);

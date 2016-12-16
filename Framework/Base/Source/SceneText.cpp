@@ -250,48 +250,48 @@ void SceneText::Init()
 	//Test->InitLOD("test", "sphere", "cubeSG");
 
 
-	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
-	aCube->SetCollider(true);
-	//aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	aCube->InitLOD("cube", "sphere", "cubeSG");
+	//GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
+	//aCube->SetCollider(true);
+	////aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	//aCube->InitLOD("cube", "sphere", "cubeSG");
 
-	// Add the pointer to this new entity to the Scene Graph
-	CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
-	if (theNode == NULL)
-	{
-		cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
-	}
+	//// Add the pointer to this new entity to the Scene Graph
+	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
+	//if (theNode == NULL)
+	//{
+	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
+	//}
 
-	GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
-	anotherCube->SetCollider(true);
-	//anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	CSceneNode* anotherNode = theNode->AddChild(anotherCube);
-	if (anotherNode == NULL)
-	{
-		cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
-	}
-	
-	GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
+	//GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
+	//anotherCube->SetCollider(true);
+	////anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	//CSceneNode* anotherNode = theNode->AddChild(anotherCube);
+	//if (anotherNode == NULL)
+	//{
+	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
+	//}
+	//
+	//GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
 
-	CSceneNode* baseNode = CSceneGraph::GetInstance()->AddNode(baseCube);
+	//CSceneNode* baseNode = CSceneGraph::GetInstance()->AddNode(baseCube);
 
-	CUpdateTransformation* baseMtx = new CUpdateTransformation();
-	baseMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
-	baseMtx->SetSteps(-60, 60);
-	baseNode->SetUpdateTransformation(baseMtx);
+	//CUpdateTransformation* baseMtx = new CUpdateTransformation();
+	//baseMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
+	//baseMtx->SetSteps(-60, 60);
+	//baseNode->SetUpdateTransformation(baseMtx);
 
-	GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
-	CSceneNode* childNode = baseNode->AddChild(childCube);
-	childNode->ApplyTranslate(0.0f, 1.0f, 0.0f);
+	//GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
+	//CSceneNode* childNode = baseNode->AddChild(childCube);
+	//childNode->ApplyTranslate(0.0f, 1.0f, 0.0f);
 
-	GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
-	CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
-	grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.0f);
+	//GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
+	//CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
+	//grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.0f);
 
-	CUpdateTransformation* aRotateMtx = new CUpdateTransformation();
-	aRotateMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
-	aRotateMtx->SetSteps(-120, 60);
-	grandchildNode->SetUpdateTransformation(aRotateMtx);
+	//CUpdateTransformation* aRotateMtx = new CUpdateTransformation();
+	//aRotateMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
+	//aRotateMtx->SetSteps(-120, 60);
+	//grandchildNode->SetUpdateTransformation(aRotateMtx);
 	
 	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
 	//Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));
@@ -312,7 +312,7 @@ void SceneText::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
@@ -452,10 +452,9 @@ void SceneText::Update(double dt)
 		z -= (float)(100.f * dt);
 	if (KeyboardController::GetInstance()->IsKeyDown('H'))
 		z += (float)(100.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('V'))
-		x -= (float)(100.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('B'))
-		x += (float)(100.f * dt);
+	if (KeyboardController::GetInstance()->IsKeyReleased('B'))
+		CSpatialPartition::GetInstance()->ShouldRender = !CSpatialPartition::GetInstance()->ShouldRender;
+
 	theWall->SetPosition(Vector3(x, y, z));
 
 	//cout << theWall->GetPosition() << endl;
@@ -479,14 +478,10 @@ void SceneText::Update(double dt)
 	textObj[1]->SetText(ss.str());
 
 	std::ostringstream ss1;
-	ss1.precision(4);
-	ss1 << "Player HP:" << CPlayerInfo::GetInstance()->getHealth();
-	textObj[2]->SetText(ss1.str());
-
 	ss1.str("");
 	ss1.precision(4);
 	ss1 << "Door HP:" << DoorHealth << " / 2000";
-	textObj[3]->SetText(ss1.str());
+	textObj[2]->SetText(ss1.str());
 }
 
 void SceneText::Render()
