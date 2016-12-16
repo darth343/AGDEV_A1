@@ -65,8 +65,8 @@ void EntityManager::Render()
 	CSceneGraph::GetInstance()->Render();
 
 	//// Render the Spatial Partition
-	if (theSpatialPartition)
-		theSpatialPartition->Render();
+	//if (theSpatialPartition)
+	//	theSpatialPartition->Render();
 }
 
 // Render the UI entities
@@ -370,39 +370,45 @@ bool EntityManager::CheckForCollision(void)
 						{
 							CEnemy* theEnemy = dynamic_cast<CEnemy*>(thatCollider);
 
-							for (int i = 0; i < theEnemy->BodyNode->GetNumOfChild(); i++)
+							if (!theEnemy->IsDone())
 							{
-								if (theEnemy->BodyNode->GetChildren()[i] == theEnemy->RHandNode || theEnemy->BodyNode->GetChildren()[i] == theEnemy->LHandNode)
-									continue;
-
-								GenericEntity *ChildCollider = dynamic_cast<GenericEntity*>(theEnemy->BodyNode->GetChildren()[i]->GetEntity());
-								Vector3 ChildMin = ChildCollider->GetMinAABB() * theEnemy->GetScale().x + theEnemy->GetPosition() + theEnemy->BodyNode->GetChildren()[i]->offset* theEnemy->GetScale().x;
-								Vector3 ChildMax = ChildCollider->GetMaxAABB() * theEnemy->GetScale().x + theEnemy->GetPosition() + theEnemy->BodyNode->GetChildren()[i]->offset* theEnemy->GetScale().x;
-								if (CheckLineSegmentPlane(
-									thisEntity->GetPosition(),
-									thisEntity->GetPosition() + thisEntity->GetDirection() * thisEntity->GetLength(),
-									ChildMin, ChildMax,
-									hitPosition) == true)
+								for (int i = 0; i < theEnemy->BodyNode->GetNumOfChild(); i++)
 								{
-									theEnemy->health -= 75;
+									if (theEnemy->BodyNode->GetChildren()[i] == theEnemy->RHandNode || theEnemy->BodyNode->GetChildren()[i] == theEnemy->LHandNode)
+										continue;
+
+									GenericEntity *ChildCollider = dynamic_cast<GenericEntity*>(theEnemy->BodyNode->GetChildren()[i]->GetEntity());
+									Vector3 ChildMin = ChildCollider->GetMinAABB() * theEnemy->GetScale().x + theEnemy->GetPosition() + theEnemy->BodyNode->GetChildren()[i]->offset* theEnemy->GetScale().x;
+									Vector3 ChildMax = ChildCollider->GetMaxAABB() * theEnemy->GetScale().x + theEnemy->GetPosition() + theEnemy->BodyNode->GetChildren()[i]->offset* theEnemy->GetScale().x;
+									if (CheckLineSegmentPlane(
+										thisEntity->GetPosition(),
+										thisEntity->GetPosition() + thisEntity->GetDirection() * thisEntity->GetLength(),
+										ChildMin, ChildMax,
+										hitPosition) == true)
+									{
+										theEnemy->health -= 75;
+										if (theEnemy->health <= 0)
+											CPlayerInfo::GetInstance()->SetHitmarker("CRIT", true);
+										else
+											CPlayerInfo::GetInstance()->SetHitmarker("CRIT");
+										collidedWithBodyPart = true;
+										break;
+									}
+								}
+								if (!collidedWithBodyPart)
+								{
+									theEnemy->health -= 25;
 									if (theEnemy->health <= 0)
-										CPlayerInfo::GetInstance()->SetHitmarker("CRIT", true);
+										CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT", true);
 									else
-										CPlayerInfo::GetInstance()->SetHitmarker("CRIT");
-									collidedWithBodyPart = true;
-									break;
+										CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT");
+								}
+								if (theEnemy->health <= 0)
+								{
+									theEnemy->SetIsDone(true);
+									theEnemy->BodyNode->GetEntity()->SetIsDone(true);
 								}
 							}
-							if (!collidedWithBodyPart)
-							{
-								theEnemy->health -= 25;
-								if (theEnemy->health <= 0)
-									CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT", true);
-								else
-									CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT");
-							}
-							if (theEnemy->health <= 0)
-								theEnemy->BodyNode->GetEntity()->SetIsDone(true);
 						}
 						
 						(*colliderThis)->SetIsDone(true);
@@ -429,8 +435,9 @@ bool EntityManager::CheckForCollision(void)
 		{
 			// This object was derived from a CCollider class, then it will have Collision Detection methods
 			//CCollider *thisCollider = dynamic_cast<CCollider*>(*colliderThis);
-			EntityBase *thisEntity = dynamic_cast<EntityBase*>(*colliderThis);
-
+			GenericEntity *thisEntity = dynamic_cast<GenericEntity*>(*colliderThis);
+			if (thisEntity->isEnemy())
+				continue;
 			// Check for collision with another collider class
 			colliderThatEnd = entityList.end();
 			int counter = 0;

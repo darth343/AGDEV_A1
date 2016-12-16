@@ -11,6 +11,7 @@
 #include "../WeaponInfo/GrenadeThrow.h"
 #include "../SpatialPartition/SpatialPartition.h"
 #include "../Wall/WallEntity.h"
+#include "../TextEntity.h"
 
 // Allocating and initializing CPlayerInfo's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -18,7 +19,7 @@ CPlayerInfo *CPlayerInfo::s_instance = 0;
 
 CPlayerInfo::CPlayerInfo(void)
 	: m_dSpeed(40.0)
-	, m_dRotationSpeed(120.0)
+	, m_dRotationSpeed(160.0)
 	, m_dAcceleration(10.0)
 	, m_bJumpUpwards(false)
 	, m_dJumpSpeed(25.0)
@@ -129,10 +130,13 @@ void CPlayerInfo::SetHitmarker(string hm_type, bool isKill)
 		hitmarker_type = NON_CRIT;
 		Application::GetInstance().m_soundEngine->play2D("Music\\BodyShot.mp3");
 	}
+
 	if (isKill)
 	{
 		hitmarker_type = KILL;
 		Application::GetInstance().m_soundEngine->play2D("Music\\KillSound.mp3");
+		if (hm_type == "CRIT")
+		primaryWeapon->SetMagRound(primaryWeapon->GetMaxMagRound());
 	}
 	HitmarkerCurrentTime = 0.f;
 	HitmarkerScale = 200.f;
@@ -509,6 +513,7 @@ void CPlayerInfo::UpdateHitmarker(double dt)
  ********************************************************************************/
 void CPlayerInfo::Update(double dt)
 {
+	cout << "Pos: " << position << endl;
 	UpdateCamera(dt);
 	UpdateHitmarker(dt);
 	//CGrid* temp = CSpatialPartition::GetInstance()->GetGrid(position);
@@ -583,6 +588,7 @@ void CPlayerInfo::Render()
 
 void CPlayerInfo::RenderUI()
 {
+
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
 	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
 

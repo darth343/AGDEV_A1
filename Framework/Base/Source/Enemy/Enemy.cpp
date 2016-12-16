@@ -43,7 +43,7 @@ void CEnemy::Init()
 	minBoundary.Set(1, 1, 1);
 
 	// Set Speed
-	m_dSpeed = 5.0;
+	m_dSpeed = 60.0;
 
 	// Initialize the LOD meshes
 	InitLOD("Chair", "sphere", "cubeSG");
@@ -192,8 +192,8 @@ void CEnemy::Update(double dt)
 {
 	prevPosition = position;
 	Vector3 direction = (target - position);
-	//if (direction.Length() > 10)
-	//position += direction.Normalized() * (float)m_dSpeed * (float)dt;
+	if (((position + direction.Normalized() * (float)m_dSpeed * (float)dt) - target).Length() > 5)
+	position += direction.Normalized() * (float)m_dSpeed * (float)dt;
 	Constrain();
 	// Update the target
 	if (position.z > 400.f)

@@ -296,7 +296,6 @@ void SceneText::Init()
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
-	textObj[0]->SetText("HELLO WORLD");
 
 	CEnemy* theEnemy = new CEnemy();
 	theEnemy->Init();
@@ -311,6 +310,8 @@ void SceneText::Init()
 		Vector3(0, -11, 280),
 		Vector3(2, 1.5, 1.5)
 		);
+
+	theWall->SetCollider(false);
 
 	//enemyHouse->SetScale(Vector3(2, 1.5, 1.5));
 	//enemyHouse->SetPosition(Vector3(0, -11, 70));
@@ -342,13 +343,39 @@ void SceneText::Init()
 	//ground2->SetPosition(Vector3(0, -11, 0));
 	//ground2->InitLOD("ground2", "ground2", "ground2");
 	//ground1->SetAABB(Vector3(33, 0.5, 9), Vector3(-33, -0.5, -9));
+	Spawner[0].Init();
+	Spawner[0].Position.Set(-17, 0, 260);
+	Spawner[0].currentTime = Math::RandFloatMinMax(-2, 2);
+	Spawner[1].Init();
+	Spawner[1].Position.Set(-0.6, 0, 273);
+	Spawner[1].currentTime = Math::RandFloatMinMax(-2, 2);
+	Spawner[2].Init();
+	Spawner[2].Position.Set(23, 0, 277);
+	Spawner[2].currentTime = Math::RandFloatMinMax(-2, 2);
+}
+
+void SceneText::SpawnEnemies(double dt)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		Spawner[i].currentTime += dt;
+		if (Spawner[i].currentTime > Spawner[i].waitTime)
+		{
+			Spawner[i].currentTime -= Spawner[i].waitTime;
+			CEnemy* theEnemy = new CEnemy();
+			theEnemy->Init();
+			theEnemy->SetTerrain(groundEntity);
+			theEnemy->SetPosition(Spawner[i].Position);
+			theEnemy->SetTarget(Vector3(0, 0, -67));
+		}
+	}
 }
 
 void SceneText::Update(double dt)
 {
+		SpawnEnemies(dt);
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
-
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	if(KeyboardController::GetInstance()->IsKeyDown('1'))
 		glEnable(GL_CULL_FACE);
@@ -409,7 +436,7 @@ void SceneText::Update(double dt)
 		x += (float)(100.f * dt);
 	theWall->SetPosition(Vector3(x, y, z));
 
-	cout << theWall->GetPosition() << endl;
+	//cout << theWall->GetPosition() << endl;
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 
@@ -419,6 +446,10 @@ void SceneText::Update(double dt)
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
+	std::ostringstream ss2;
+	ss2 << "Ammo: " << CPlayerInfo::GetInstance()->GetPrimaryWeapon()->GetMagRound() << " / " << CPlayerInfo::GetInstance()->GetPrimaryWeapon()->GetTotalRound();
+	textObj[0]->SetText(ss2.str());
+
 	std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
@@ -427,7 +458,7 @@ void SceneText::Update(double dt)
 
 	std::ostringstream ss1;
 	ss1.precision(4);
-	ss1 << "Player:" << playerInfo->GetPos();
+	ss1 << "Player HP:" << CPlayerInfo::GetInstance()->getHealth();
 	textObj[2]->SetText(ss1.str());
 }
 

@@ -119,6 +119,10 @@ public:
 	void Render();
 	void RenderUI();
 
+	float getHealth(){ return health; }
+
+	CWeaponInfo* GetPrimaryWeapon(){ return primaryWeapon; };
+
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 position, target, up;
@@ -147,4 +151,6 @@ private:
 	float HitmarkerWaitTime;
 	float HitmarkerScale;
 	HITMARKER_TYPE hitmarker_type;
+
+	float health;
 };
