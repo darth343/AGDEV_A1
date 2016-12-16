@@ -66,5 +66,7 @@ public:
 	GenericEntity* HeadEntity;
 	GenericEntity* LHandEntity;
 	GenericEntity* RHandEntity;
+
+	float health;
 };
 

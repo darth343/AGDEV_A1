@@ -103,7 +103,7 @@ public:
 	void CheckWallCollision(Vector3 &nextPos);
 
 	// Set Hitmarker
-	void SetHitmarker(std::string hm_type);
+	void SetHitmarker(std::string hm_type, bool isKill = false);
 	
 	void UpdateHitmarker(double dt);
 

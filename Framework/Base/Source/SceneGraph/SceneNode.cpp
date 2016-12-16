@@ -380,6 +380,9 @@ void CSceneNode::Render(void)
 
 		if (theEntity)
 		{
+
+			if (theEntity->IsDone())
+				return;
 			//modelStack.LoadMatrix(this->GetTransform());
 			modelStack.MultMatrix(this->GetTransform());
 

@@ -384,19 +384,29 @@ bool EntityManager::CheckForCollision(void)
 									ChildMin, ChildMax,
 									hitPosition) == true)
 								{
-									CPlayerInfo::GetInstance()->SetHitmarker("CRIT");
+									theEnemy->health -= 75;
+									if (theEnemy->health <= 0)
+										CPlayerInfo::GetInstance()->SetHitmarker("CRIT", true);
+									else
+										CPlayerInfo::GetInstance()->SetHitmarker("CRIT");
 									collidedWithBodyPart = true;
 									break;
 								}
 							}
 							if (!collidedWithBodyPart)
 							{
-								CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT");
+								theEnemy->health -= 25;
+								if (theEnemy->health <= 0)
+									CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT", true);
+								else
+									CPlayerInfo::GetInstance()->SetHitmarker("NON_CRIT");
 							}
+							if (theEnemy->health <= 0)
+								theEnemy->BodyNode->GetEntity()->SetIsDone(true);
 						}
-
+						
 						(*colliderThis)->SetIsDone(true);
-						//(*colliderThat)->SetIsDone(true);
+
 
 						//for (int i = 0; i < )
 

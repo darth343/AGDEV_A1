@@ -117,19 +117,22 @@ void CPlayerInfo::SetOnFreeFall(bool isOnFreeFall)
 	}
 }
 
-void CPlayerInfo::SetHitmarker(string hm_type)
+void CPlayerInfo::SetHitmarker(string hm_type, bool isKill)
 {
 	if (hm_type == "CRIT")
 	{
 		hitmarker_type = CRIT;
+		Application::GetInstance().m_soundEngine->play2D("Music\\HeadShot.mp3");
 	}
 	else if (hm_type == "NON_CRIT")
 	{
 		hitmarker_type = NON_CRIT;
+		Application::GetInstance().m_soundEngine->play2D("Music\\BodyShot.mp3");
 	}
-	else if (hm_type == "KILL")
+	if (isKill)
 	{
 		hitmarker_type = KILL;
+		Application::GetInstance().m_soundEngine->play2D("Music\\KillSound.mp3");
 	}
 	HitmarkerCurrentTime = 0.f;
 	HitmarkerScale = 200.f;

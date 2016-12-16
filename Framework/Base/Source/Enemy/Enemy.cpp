@@ -53,6 +53,7 @@ void CEnemy::Init()
 	this->SetAABB(Vector3(1, 1, 1), Vector3(-1, -1, -1));
 	this->SetScale(Vector3(3, 3, 3));
 	this->SetIsEnemy(true);
+	health = 150;
 	GenericEntity* BodyEntity = Create::Asset("RobotBody", Vector3(0.0f, 0.0f, 0.0f));
 	BodyNode = CSceneGraph::GetInstance()->AddNode(BodyEntity);
 	BodyEntity->SetAABB(MeshBuilder::GetInstance()->GetMesh("RobotBody")->Max, MeshBuilder::GetInstance()->GetMesh("RobotBody")->Min);
