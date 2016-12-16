@@ -37,7 +37,7 @@ private:
 	FPSCamera camera;
 	TextEntity* textObj[3];
 	Light* lights[2];
-
+	Vector3 SpawnPoint[3];
 	GenericEntity* theCube;
 	CWall* theWall;
 	static SceneText* sInstance; // The pointer to the object that gets registered

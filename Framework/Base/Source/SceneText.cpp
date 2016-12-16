@@ -303,12 +303,12 @@ void SceneText::Init()
 	theEnemy->SetTerrain(groundEntity);
 
 
-	theWall = Create::Wall("cube", "cubeSG", "sphere",
-		Vector3(0, 0, 0),
-		Vector3(100, 10, 10));
+	//theWall = Create::Wall("cube", "cubeSG", "sphere",
+	//	Vector3(0, 0, 0),
+	//	Vector3(100, 10, 10));
 
-	CWall* enemyHouse = Create::Wall("enemyhouse", "enemyhouse", "enemyhouse",
-		Vector3(0, -11, 70),
+	theWall = Create::Wall("enemyhouse", "enemyhouse", "enemyhouse",
+		Vector3(0, -11, 280),
 		Vector3(2, 1.5, 1.5)
 		);
 
@@ -396,13 +396,20 @@ void SceneText::Update(double dt)
 		CSpatialPartition::GetInstance()->PrintSelf();
 	}
 
-	static float x = 0;
-	static float z = 0;
+	float x = theWall->GetPosition().x;
+	float y = theWall->GetPosition().y;
+	float z = theWall->GetPosition().z;
 	if (KeyboardController::GetInstance()->IsKeyDown('G'))
 		z -= (float)(100.f * dt);
 	if (KeyboardController::GetInstance()->IsKeyDown('H'))
 		z += (float)(100.f * dt);
-	theWall->SetPos(Vector3(x, 0, z));
+	if (KeyboardController::GetInstance()->IsKeyDown('V'))
+		x -= (float)(100.f * dt);
+	if (KeyboardController::GetInstance()->IsKeyDown('B'))
+		x += (float)(100.f * dt);
+	theWall->SetPosition(Vector3(x, y, z));
+
+	cout << theWall->GetPosition() << endl;
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 
