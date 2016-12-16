@@ -161,19 +161,19 @@ void SceneText::Init()
 
 	// Enemy house
 	MeshBuilder::GetInstance()->GenerateOBJ("enemyhouse", "OBJ//enemy_house.obj");
-	MeshBuilder::GetInstance()->GetMesh("enemyhouse")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GetMesh("enemyhouse")->textureID = LoadTGA("Image//enemyhouse.tga");
 
 	// Fortress
 	MeshBuilder::GetInstance()->GenerateOBJ("fortress", "OBJ//fortress.obj");
-	MeshBuilder::GetInstance()->GetMesh("fortress")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GetMesh("fortress")->textureID = LoadTGA("Image//fortress.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("fortress2", "OBJ//fortress2.obj");
-	MeshBuilder::GetInstance()->GetMesh("fortress2")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GetMesh("fortress2")->textureID = LoadTGA("Image//fortress.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("fortress3", "OBJ//fortress3.obj");
-	MeshBuilder::GetInstance()->GetMesh("fortress3")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GetMesh("fortress3")->textureID = LoadTGA("Image//fortress.tga");
 
 	// Ground 1
 	MeshBuilder::GetInstance()->GenerateOBJ("ground1", "OBJ//ground1.obj");
-	MeshBuilder::GetInstance()->GetMesh("ground1")->textureID = LoadTGA("Image//chair.tga");
+	MeshBuilder::GetInstance()->GetMesh("ground1")->textureID = LoadTGA("Image//ground1.tga");
 
 	// Ground 2
 	MeshBuilder::GetInstance()->GenerateOBJ("ground2", "OBJ//ground2.obj");
